@@ -1,0 +1,2644 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix schema: <http://schema.org/> .
+@prefix custom: <http://example.org/foaf-poc/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FoaF Graph RAG — Hand-Crafted Sample Data (50 Persons)
+#
+# This data contains realistic, interconnected persons organized into:
+#   • 8 families with marriages, children, and siblings
+#   • Colleague groups within the same industry/city
+#   • Friend networks across cities
+#   • Neighbor relationships within the same city
+#
+# Data is consistent: spouses share last names and cities, children have
+# appropriate ages relative to parents, colleagues work in the same industry.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── Family 1: The Sharma Family (Bangalore, India) ──────────────────────────
+
+custom:person001 a custom:Person ;
+    foaf:name "Rajesh Sharma" ;
+    foaf:givenName "Rajesh" ;
+    foaf:familyName "Sharma" ;
+    foaf:age 45 ;
+    foaf:gender "male" ;
+    foaf:phone "+91-80-2345-6789" ;
+    foaf:mbox <mailto:rajesh.sharma@techindia.com> ;
+    schema:address "42 MG Road, Indiranagar, Bangalore, Karnataka 560038, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560038" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "Senior Software Architect" ;
+    custom:occupation "Software Architecture and System Design" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:00:00"^^xsd:dateTime .
+
+custom:person002 a custom:Person ;
+    foaf:name "Priya Sharma" ;
+    foaf:givenName "Priya" ;
+    foaf:familyName "Sharma" ;
+    foaf:age 42 ;
+    foaf:gender "female" ;
+    foaf:phone "+91-80-2345-6790" ;
+    foaf:mbox <mailto:priya.sharma@apollohospital.in> ;
+    schema:address "42 MG Road, Indiranagar, Bangalore, Karnataka 560038, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560038" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "Cardiologist" ;
+    custom:occupation "Interventional Cardiology" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:01:00"^^xsd:dateTime .
+
+custom:person003 a custom:Person ;
+    foaf:name "Ananya Sharma" ;
+    foaf:givenName "Ananya" ;
+    foaf:familyName "Sharma" ;
+    foaf:age 20 ;
+    foaf:gender "female" ;
+    foaf:phone "+91-80-9876-5432" ;
+    foaf:mbox <mailto:ananya.sharma@iisc.ac.in> ;
+    schema:address "42 MG Road, Indiranagar, Bangalore, Karnataka 560038, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560038" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "Computer Science Student" ;
+    custom:occupation "Undergraduate Research in AI" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:02:00"^^xsd:dateTime .
+
+custom:person004 a custom:Person ;
+    foaf:name "Arjun Sharma" ;
+    foaf:givenName "Arjun" ;
+    foaf:familyName "Sharma" ;
+    foaf:age 17 ;
+    foaf:gender "male" ;
+    foaf:phone "+91-80-9876-5433" ;
+    foaf:mbox <mailto:arjun.sharma@school.in> ;
+    schema:address "42 MG Road, Indiranagar, Bangalore, Karnataka 560038, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560038" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "High School Student" ;
+    custom:occupation "Science Stream Student" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:03:00"^^xsd:dateTime .
+
+# ── Family 2: The Johnson Family (New York, USA) ────────────────────────────
+
+custom:person005 a custom:Person ;
+    foaf:name "Michael Johnson" ;
+    foaf:givenName "Michael" ;
+    foaf:familyName "Johnson" ;
+    foaf:age 50 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-0101" ;
+    foaf:mbox <mailto:m.johnson@goldmansachs.com> ;
+    schema:address "150 East 72nd Street, Apt 12A, New York, NY 10021, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10021" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Managing Director - Investment Banking" ;
+    custom:occupation "Mergers and Acquisitions Advisory" ;
+    custom:industry "Finance" ;
+    custom:createdAt "2025-01-15T10:04:00"^^xsd:dateTime .
+
+custom:person006 a custom:Person ;
+    foaf:name "Sarah Johnson" ;
+    foaf:givenName "Sarah" ;
+    foaf:familyName "Johnson" ;
+    foaf:age 48 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-212-555-0102" ;
+    foaf:mbox <mailto:s.johnson@whitecase.com> ;
+    schema:address "150 East 72nd Street, Apt 12A, New York, NY 10021, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10021" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Partner - Corporate Law" ;
+    custom:occupation "Corporate Mergers and Securities Law" ;
+    custom:industry "Legal" ;
+    custom:createdAt "2025-01-15T10:05:00"^^xsd:dateTime .
+
+custom:person007 a custom:Person ;
+    foaf:name "Emily Johnson" ;
+    foaf:givenName "Emily" ;
+    foaf:familyName "Johnson" ;
+    foaf:age 24 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-212-555-0103" ;
+    foaf:mbox <mailto:emily.johnson@ogilvy.com> ;
+    schema:address "88 Greenwich Street, Apt 4C, New York, NY 10006, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10006" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Marketing Analyst" ;
+    custom:occupation "Brand Strategy and Consumer Analytics" ;
+    custom:industry "Marketing" ;
+    custom:createdAt "2025-01-15T10:06:00"^^xsd:dateTime .
+
+# ── Family 3: The Chen Family (San Francisco, USA) ──────────────────────────
+
+custom:person008 a custom:Person ;
+    foaf:name "David Chen" ;
+    foaf:givenName "David" ;
+    foaf:familyName "Chen" ;
+    foaf:age 38 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-415-555-0201" ;
+    foaf:mbox <mailto:david.chen@google.com> ;
+    schema:address "1200 Pacific Avenue, San Francisco, CA 94109, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Staff Machine Learning Engineer" ;
+    custom:occupation "Large Language Model Training and Deployment" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:07:00"^^xsd:dateTime .
+
+custom:person009 a custom:Person ;
+    foaf:name "Lisa Chen" ;
+    foaf:givenName "Lisa" ;
+    foaf:familyName "Chen" ;
+    foaf:age 36 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-415-555-0202" ;
+    foaf:mbox <mailto:lisa.chen@figma.com> ;
+    schema:address "1200 Pacific Avenue, San Francisco, CA 94109, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Lead UX Designer" ;
+    custom:occupation "User Experience Research and Interface Design" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:08:00"^^xsd:dateTime .
+
+custom:person010 a custom:Person ;
+    foaf:name "Sophie Chen" ;
+    foaf:givenName "Sophie" ;
+    foaf:familyName "Chen" ;
+    foaf:age 10 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-415-555-0203" ;
+    schema:address "1200 Pacific Avenue, San Francisco, CA 94109, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Elementary School Student" ;
+    custom:occupation "4th Grade Student" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:09:00"^^xsd:dateTime .
+
+# ── Family 4: The Williams Family (Chicago, USA) ────────────────────────────
+
+custom:person011 a custom:Person ;
+    foaf:name "James Williams" ;
+    foaf:givenName "James" ;
+    foaf:familyName "Williams" ;
+    foaf:age 55 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-312-555-0301" ;
+    foaf:mbox <mailto:j.williams@uchicago.edu> ;
+    schema:address "5801 South Ellis Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Professor of Physics" ;
+    custom:occupation "Quantum Computing Research" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:10:00"^^xsd:dateTime .
+
+custom:person012 a custom:Person ;
+    foaf:name "Maria Williams" ;
+    foaf:givenName "Maria" ;
+    foaf:familyName "Williams" ;
+    foaf:age 52 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-0302" ;
+    foaf:mbox <mailto:maria.williams@uchicagomed.org> ;
+    schema:address "5801 South Ellis Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Head Nurse - ICU" ;
+    custom:occupation "Intensive Care Unit Nursing Management" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:11:00"^^xsd:dateTime .
+
+custom:person013 a custom:Person ;
+    foaf:name "Tyler Williams" ;
+    foaf:givenName "Tyler" ;
+    foaf:familyName "Williams" ;
+    foaf:age 28 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-312-555-0303" ;
+    foaf:mbox <mailto:tyler.williams@aeceng.com> ;
+    schema:address "1430 North Lake Shore Drive, Chicago, IL 60610, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60610" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Civil Engineer" ;
+    custom:occupation "Structural Engineering for High-Rise Buildings" ;
+    custom:industry "Construction" ;
+    custom:createdAt "2025-01-15T10:12:00"^^xsd:dateTime .
+
+custom:person014 a custom:Person ;
+    foaf:name "Emma Williams" ;
+    foaf:givenName "Emma" ;
+    foaf:familyName "Williams" ;
+    foaf:age 25 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-0304" ;
+    foaf:mbox <mailto:emma.williams@designstudio.com> ;
+    schema:address "1430 North Lake Shore Drive, Chicago, IL 60610, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60610" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Graphic Designer" ;
+    custom:occupation "Brand Identity and Visual Communication" ;
+    custom:industry "Media" ;
+    custom:createdAt "2025-01-15T10:13:00"^^xsd:dateTime .
+
+# ── Family 5: The Patel Family (Boston, USA) ────────────────────────────────
+
+custom:person015 a custom:Person ;
+    foaf:name "Amit Patel" ;
+    foaf:givenName "Amit" ;
+    foaf:familyName "Patel" ;
+    foaf:age 47 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-617-555-0401" ;
+    foaf:mbox <mailto:amit.patel@massgenhospital.org> ;
+    schema:address "320 Beacon Street, Boston, MA 02116, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02116" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Neurosurgeon" ;
+    custom:occupation "Minimally Invasive Brain Surgery" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:14:00"^^xsd:dateTime .
+
+custom:person016 a custom:Person ;
+    foaf:name "Neha Patel" ;
+    foaf:givenName "Neha" ;
+    foaf:familyName "Patel" ;
+    foaf:age 44 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-0402" ;
+    foaf:mbox <mailto:neha.patel@cvshealth.com> ;
+    schema:address "320 Beacon Street, Boston, MA 02116, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02116" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Clinical Pharmacist" ;
+    custom:occupation "Medication Therapy Management" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:15:00"^^xsd:dateTime .
+
+custom:person017 a custom:Person ;
+    foaf:name "Rohan Patel" ;
+    foaf:givenName "Rohan" ;
+    foaf:familyName "Patel" ;
+    foaf:age 21 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-617-555-0403" ;
+    foaf:mbox <mailto:rohan.patel@bu.edu> ;
+    schema:address "700 Commonwealth Avenue, Boston, MA 02215, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02215" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Pre-Med Student" ;
+    custom:occupation "Biology Major with Chemistry Minor" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:16:00"^^xsd:dateTime .
+
+# ── Family 6: The Kim Family (Seattle, USA) ─────────────────────────────────
+
+custom:person018 a custom:Person ;
+    foaf:name "Robert Kim" ;
+    foaf:givenName "Robert" ;
+    foaf:familyName "Kim" ;
+    foaf:age 43 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-0501" ;
+    foaf:mbox <mailto:robert.kim@amazon.com> ;
+    schema:address "2200 Westlake Avenue N, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Product Manager" ;
+    custom:occupation "Cloud Services Product Strategy" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:17:00"^^xsd:dateTime .
+
+custom:person019 a custom:Person ;
+    foaf:name "Jennifer Kim" ;
+    foaf:givenName "Jennifer" ;
+    foaf:familyName "Kim" ;
+    foaf:age 41 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-206-555-0502" ;
+    foaf:mbox <mailto:jennifer.kim@deloitte.com> ;
+    schema:address "2200 Westlake Avenue N, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Financial Analyst" ;
+    custom:occupation "Corporate Financial Planning and Forecasting" ;
+    custom:industry "Finance" ;
+    custom:createdAt "2025-01-15T10:18:00"^^xsd:dateTime .
+
+custom:person020 a custom:Person ;
+    foaf:name "Daniel Kim" ;
+    foaf:givenName "Daniel" ;
+    foaf:familyName "Kim" ;
+    foaf:age 15 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-0503" ;
+    schema:address "2200 Westlake Avenue N, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "High School Student" ;
+    custom:occupation "Sophomore at Roosevelt High School" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:19:00"^^xsd:dateTime .
+
+# ── Family 7: The Rodriguez Family (Austin, USA) ────────────────────────────
+
+custom:person021 a custom:Person ;
+    foaf:name "Carlos Rodriguez" ;
+    foaf:givenName "Carlos" ;
+    foaf:familyName "Rodriguez" ;
+    foaf:age 40 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-512-555-0601" ;
+    foaf:mbox <mailto:carlos.rodriguez@dell.com> ;
+    schema:address "4500 South Lamar Blvd, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior DevOps Engineer" ;
+    custom:occupation "Cloud Infrastructure and CI/CD Pipeline Automation" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:20:00"^^xsd:dateTime .
+
+custom:person022 a custom:Person ;
+    foaf:name "Isabella Rodriguez" ;
+    foaf:givenName "Isabella" ;
+    foaf:familyName "Rodriguez" ;
+    foaf:age 38 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-512-555-0602" ;
+    foaf:mbox <mailto:isabella.rodriguez@gensler.com> ;
+    schema:address "4500 South Lamar Blvd, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Licensed Architect" ;
+    custom:occupation "Sustainable Commercial Building Design" ;
+    custom:industry "Construction" ;
+    custom:createdAt "2025-01-15T10:21:00"^^xsd:dateTime .
+
+custom:person023 a custom:Person ;
+    foaf:name "Lucas Rodriguez" ;
+    foaf:givenName "Lucas" ;
+    foaf:familyName "Rodriguez" ;
+    foaf:age 12 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-512-555-0603" ;
+    schema:address "4500 South Lamar Blvd, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Middle School Student" ;
+    custom:occupation "7th Grade Student" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:22:00"^^xsd:dateTime .
+
+# ── Individual Professionals (24–32) ────────────────────────────────────────
+
+custom:person024 a custom:Person ;
+    foaf:name "Fatima Al-Hassan" ;
+    foaf:givenName "Fatima" ;
+    foaf:familyName "Al-Hassan" ;
+    foaf:age 34 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-415-555-0701" ;
+    foaf:mbox <mailto:fatima.alhassan@meta.com> ;
+    schema:address "1180 Folsom Street, Apt 7B, San Francisco, CA 94103, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94103" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Data Scientist" ;
+    custom:occupation "Recommendation Systems and NLP Research" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:23:00"^^xsd:dateTime .
+
+custom:person025 a custom:Person ;
+    foaf:name "Kevin Park" ;
+    foaf:givenName "Kevin" ;
+    foaf:familyName "Park" ;
+    foaf:age 37 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-415-555-0702" ;
+    foaf:mbox <mailto:kevin.park@stripe.com> ;
+    schema:address "1220 Folsom Street, Apt 3A, San Francisco, CA 94103, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94103" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Principal Backend Engineer" ;
+    custom:occupation "Payment Systems and Distributed Architecture" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:24:00"^^xsd:dateTime .
+
+custom:person026 a custom:Person ;
+    foaf:name "Amanda Foster" ;
+    foaf:givenName "Amanda" ;
+    foaf:familyName "Foster" ;
+    foaf:age 29 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-212-555-0801" ;
+    foaf:mbox <mailto:amanda.foster@nytimes.com> ;
+    schema:address "425 West 23rd Street, Apt 6D, New York, NY 10011, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10011" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Investigative Journalist" ;
+    custom:occupation "Technology and Privacy Reporting" ;
+    custom:industry "Media" ;
+    custom:createdAt "2025-01-15T10:25:00"^^xsd:dateTime .
+
+custom:person027 a custom:Person ;
+    foaf:name "Thomas Brown" ;
+    foaf:givenName "Thomas" ;
+    foaf:familyName "Brown" ;
+    foaf:age 60 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-312-555-0901" ;
+    foaf:mbox <mailto:thomas.brown@gmail.com> ;
+    schema:address "5900 South Woodlawn Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Retired High School Teacher" ;
+    custom:occupation "Former AP Chemistry Teacher, Now Tutoring" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:26:00"^^xsd:dateTime .
+
+custom:person028 a custom:Person ;
+    foaf:name "Rachel Green" ;
+    foaf:givenName "Rachel" ;
+    foaf:familyName "Green" ;
+    foaf:age 31 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-1001" ;
+    foaf:mbox <mailto:rachel.green@angell.org> ;
+    schema:address "350 South Huntington Avenue, Boston, MA 02130, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02130" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Veterinarian" ;
+    custom:occupation "Small Animal Surgery and Emergency Medicine" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:27:00"^^xsd:dateTime .
+
+custom:person029 a custom:Person ;
+    foaf:name "Omar Hassan" ;
+    foaf:givenName "Omar" ;
+    foaf:familyName "Hassan" ;
+    foaf:age 33 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-202-555-1101" ;
+    foaf:mbox <mailto:omar.hassan@crowdstrike.com> ;
+    schema:address "1401 K Street NW, Washington, DC 20005, USA" ;
+    schema:addressLocality "Washington" ;
+    schema:addressRegion "District of Columbia" ;
+    schema:postalCode "20005" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Cybersecurity Analyst" ;
+    custom:occupation "Threat Intelligence and Incident Response" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:28:00"^^xsd:dateTime .
+
+custom:person030 a custom:Person ;
+    foaf:name "Sophia Martinez" ;
+    foaf:givenName "Sophia" ;
+    foaf:familyName "Martinez" ;
+    foaf:age 27 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-305-555-1201" ;
+    foaf:mbox <mailto:sophia.martinez@designmiami.com> ;
+    schema:address "1500 Brickell Avenue, Apt 2201, Miami, FL 33129, USA" ;
+    schema:addressLocality "Miami" ;
+    schema:addressRegion "Florida" ;
+    schema:postalCode "33129" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Interior Designer" ;
+    custom:occupation "Luxury Residential and Hospitality Design" ;
+    custom:industry "Design" ;
+    custom:createdAt "2025-01-15T10:29:00"^^xsd:dateTime .
+
+custom:person031 a custom:Person ;
+    foaf:name "William Taylor" ;
+    foaf:givenName "William" ;
+    foaf:familyName "Taylor" ;
+    foaf:age 45 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-1301" ;
+    foaf:mbox <mailto:william.taylor@thetavern.nyc> ;
+    schema:address "162 East 71st Street, New York, NY 10021, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10021" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Restaurant Owner" ;
+    custom:occupation "Owner of The Tavern NYC, Fine Dining" ;
+    custom:industry "Hospitality" ;
+    custom:createdAt "2025-01-15T10:30:00"^^xsd:dateTime .
+
+custom:person032 a custom:Person ;
+    foaf:name "Grace Lee" ;
+    foaf:givenName "Grace" ;
+    foaf:familyName "Lee" ;
+    foaf:age 39 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-310-555-1401" ;
+    foaf:mbox <mailto:grace.lee@uclahealth.org> ;
+    schema:address "10940 Wilshire Blvd, Suite 800, Los Angeles, CA 90024, USA" ;
+    schema:addressLocality "Los Angeles" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "90024" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Clinical Psychologist" ;
+    custom:occupation "Cognitive Behavioral Therapy and Trauma Recovery" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:31:00"^^xsd:dateTime .
+
+# ── Family 8: The Wright Family (Denver, USA) ───────────────────────────────
+
+custom:person033 a custom:Person ;
+    foaf:name "Nathan Wright" ;
+    foaf:givenName "Nathan" ;
+    foaf:familyName "Wright" ;
+    foaf:age 52 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-720-555-1501" ;
+    foaf:mbox <mailto:nathan.wright@remax.com> ;
+    schema:address "2850 East Colfax Avenue, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Real Estate Agent" ;
+    custom:occupation "Residential and Commercial Property Sales" ;
+    custom:industry "Real Estate" ;
+    custom:createdAt "2025-01-15T10:32:00"^^xsd:dateTime .
+
+# ── Individual Professionals (34–50) ────────────────────────────────────────
+
+custom:person034 a custom:Person ;
+    foaf:name "Olivia Davis" ;
+    foaf:givenName "Olivia" ;
+    foaf:familyName "Davis" ;
+    foaf:age 26 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-503-555-1601" ;
+    foaf:mbox <mailto:olivia.davis@epa.gov> ;
+    schema:address "810 NW Glisan Street, Portland, OR 97209, USA" ;
+    schema:addressLocality "Portland" ;
+    schema:addressRegion "Oregon" ;
+    schema:postalCode "97209" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Environmental Scientist" ;
+    custom:occupation "Water Quality Research and Policy Analysis" ;
+    custom:industry "Research" ;
+    custom:createdAt "2025-01-15T10:33:00"^^xsd:dateTime .
+
+custom:person035 a custom:Person ;
+    foaf:name "Benjamin Clark" ;
+    foaf:givenName "Benjamin" ;
+    foaf:familyName "Clark" ;
+    foaf:age 35 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-313-555-1701" ;
+    foaf:mbox <mailto:benjamin.clark@ford.com> ;
+    schema:address "1200 Michigan Avenue, Detroit, MI 48226, USA" ;
+    schema:addressLocality "Detroit" ;
+    schema:addressRegion "Michigan" ;
+    schema:postalCode "48226" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Mechanical Engineer" ;
+    custom:occupation "Electric Vehicle Powertrain Design" ;
+    custom:industry "Manufacturing" ;
+    custom:createdAt "2025-01-15T10:34:00"^^xsd:dateTime .
+
+custom:person036 a custom:Person ;
+    foaf:name "Chloe Anderson" ;
+    foaf:givenName "Chloe" ;
+    foaf:familyName "Anderson" ;
+    foaf:age 30 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-512-555-1801" ;
+    foaf:mbox <mailto:chloe.anderson@hootsuite.com> ;
+    schema:address "4600 South Lamar Blvd, Apt 202, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Social Media Manager" ;
+    custom:occupation "Content Strategy and Community Engagement" ;
+    custom:industry "Marketing" ;
+    custom:createdAt "2025-01-15T10:35:00"^^xsd:dateTime .
+
+custom:person037 a custom:Person ;
+    foaf:name "Alexander Murphy" ;
+    foaf:givenName "Alexander" ;
+    foaf:familyName "Murphy" ;
+    foaf:age 41 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-214-555-1901" ;
+    foaf:mbox <mailto:alex.murphy@americanairlines.com> ;
+    schema:address "3200 Mockingbird Lane, Dallas, TX 75205, USA" ;
+    schema:addressLocality "Dallas" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "75205" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Airline Pilot" ;
+    custom:occupation "Boeing 787 Captain, International Routes" ;
+    custom:industry "Aviation" ;
+    custom:createdAt "2025-01-15T10:36:00"^^xsd:dateTime .
+
+custom:person038 a custom:Person ;
+    foaf:name "Hannah Scott" ;
+    foaf:givenName "Hannah" ;
+    foaf:familyName "Scott" ;
+    foaf:age 23 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-2001" ;
+    foaf:mbox <mailto:hannah.scott@mit.edu> ;
+    schema:address "77 Massachusetts Avenue, Cambridge, MA 02139, USA" ;
+    schema:addressLocality "Cambridge" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02139" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Graduate Researcher" ;
+    custom:occupation "PhD Candidate in Computational Neuroscience" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:37:00"^^xsd:dateTime .
+
+custom:person039 a custom:Person ;
+    foaf:name "Daniel Cooper" ;
+    foaf:givenName "Daniel" ;
+    foaf:familyName "Cooper" ;
+    foaf:age 48 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-2101" ;
+    foaf:mbox <mailto:daniel.cooper@jpmorgan.com> ;
+    schema:address "200 Park Avenue, Apt 34B, New York, NY 10166, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10166" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Chief Financial Officer" ;
+    custom:occupation "Corporate Financial Strategy and Risk Management" ;
+    custom:industry "Finance" ;
+    custom:createdAt "2025-01-15T10:38:00"^^xsd:dateTime .
+
+custom:person040 a custom:Person ;
+    foaf:name "Mia Torres" ;
+    foaf:givenName "Mia" ;
+    foaf:familyName "Torres" ;
+    foaf:age 33 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-713-555-2201" ;
+    foaf:mbox <mailto:mia.torres@texaschildrens.org> ;
+    schema:address "6621 Fannin Street, Houston, TX 77030, USA" ;
+    schema:addressLocality "Houston" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "77030" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Pediatrician" ;
+    custom:occupation "General Pediatrics and Child Development" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:39:00"^^xsd:dateTime .
+
+custom:person041 a custom:Person ;
+    foaf:name "Ethan Brooks" ;
+    foaf:givenName "Ethan" ;
+    foaf:familyName "Brooks" ;
+    foaf:age 29 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-2301" ;
+    foaf:mbox <mailto:ethan.brooks@microsoft.com> ;
+    schema:address "2250 Westlake Avenue N, Apt 5C, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Software Developer" ;
+    custom:occupation "Azure Cloud Services Development" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T10:40:00"^^xsd:dateTime .
+
+custom:person042 a custom:Person ;
+    foaf:name "Lily Nguyen" ;
+    foaf:givenName "Lily" ;
+    foaf:familyName "Nguyen" ;
+    foaf:age 36 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-202-555-2401" ;
+    foaf:mbox <mailto:lily.nguyen@aclu.org> ;
+    schema:address "1420 New York Avenue NW, Washington, DC 20005, USA" ;
+    schema:addressLocality "Washington" ;
+    schema:addressRegion "District of Columbia" ;
+    schema:postalCode "20005" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Civil Rights Lawyer" ;
+    custom:occupation "Constitutional Law and Immigration Rights" ;
+    custom:industry "Legal" ;
+    custom:createdAt "2025-01-15T10:41:00"^^xsd:dateTime .
+
+custom:person043 a custom:Person ;
+    foaf:name "Samuel Jackson" ;
+    foaf:givenName "Samuel" ;
+    foaf:familyName "Jackson" ;
+    foaf:age 58 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-404-555-2501" ;
+    foaf:mbox <mailto:samuel.jackson@turnerconstruction.com> ;
+    schema:address "191 Peachtree Street NE, Atlanta, GA 30303, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30303" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Construction Project Manager" ;
+    custom:occupation "Large-Scale Commercial Construction Management" ;
+    custom:industry "Construction" ;
+    custom:createdAt "2025-01-15T10:42:00"^^xsd:dateTime .
+
+custom:person044 a custom:Person ;
+    foaf:name "Zoe Campbell" ;
+    foaf:givenName "Zoe" ;
+    foaf:familyName "Campbell" ;
+    foaf:age 22 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-503-555-2601" ;
+    foaf:mbox <mailto:zoe.campbell@freelance.com> ;
+    schema:address "820 NW Glisan Street, Apt 4, Portland, OR 97209, USA" ;
+    schema:addressLocality "Portland" ;
+    schema:addressRegion "Oregon" ;
+    schema:postalCode "97209" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Freelance Photographer" ;
+    custom:occupation "Nature and Portrait Photography" ;
+    custom:industry "Media" ;
+    custom:createdAt "2025-01-15T10:43:00"^^xsd:dateTime .
+
+custom:person045 a custom:Person ;
+    foaf:name "Ryan Mitchell" ;
+    foaf:givenName "Ryan" ;
+    foaf:familyName "Mitchell" ;
+    foaf:age 32 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-720-555-2701" ;
+    foaf:mbox <mailto:ryan.mitchell@sportsmed.com> ;
+    schema:address "2870 East Colfax Avenue, Apt 5, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Physical Therapist" ;
+    custom:occupation "Sports Injury Rehabilitation and Recovery" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T10:44:00"^^xsd:dateTime .
+
+custom:person046 a custom:Person ;
+    foaf:name "Ava Robinson" ;
+    foaf:givenName "Ava" ;
+    foaf:familyName "Robinson" ;
+    foaf:age 40 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-2801" ;
+    foaf:mbox <mailto:ava.robinson@cpschools.edu> ;
+    schema:address "5820 South Woodlawn Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "High School Principal" ;
+    custom:occupation "Educational Leadership and Curriculum Development" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:45:00"^^xsd:dateTime .
+
+custom:person047 a custom:Person ;
+    foaf:name "Jack Turner" ;
+    foaf:givenName "Jack" ;
+    foaf:familyName "Turner" ;
+    foaf:age 44 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-512-555-2901" ;
+    foaf:mbox <mailto:jack.turner@austinelectric.com> ;
+    schema:address "4520 South Lamar Blvd, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Master Electrician" ;
+    custom:occupation "Commercial and Residential Electrical Contracting" ;
+    custom:industry "Trades" ;
+    custom:createdAt "2025-01-15T10:46:00"^^xsd:dateTime .
+
+custom:person048 a custom:Person ;
+    foaf:name "Nadia Petrova" ;
+    foaf:givenName "Nadia" ;
+    foaf:familyName "Petrova" ;
+    foaf:age 28 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-212-555-3001" ;
+    foaf:mbox <mailto:nadia.petrova@nycballet.com> ;
+    schema:address "430 West 24th Street, Apt 8A, New York, NY 10011, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10011" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Ballet Instructor" ;
+    custom:occupation "Classical Ballet Training and Choreography" ;
+    custom:industry "Arts" ;
+    custom:createdAt "2025-01-15T10:47:00"^^xsd:dateTime .
+
+custom:person049 a custom:Person ;
+    foaf:name "Marcus Reed" ;
+    foaf:givenName "Marcus" ;
+    foaf:familyName "Reed" ;
+    foaf:age 36 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-310-555-3101" ;
+    foaf:mbox <mailto:marcus.reed@equinox.com> ;
+    schema:address "8590 Sunset Blvd, West Hollywood, CA 90069, USA" ;
+    schema:addressLocality "Los Angeles" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "90069" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Certified Personal Trainer" ;
+    custom:occupation "Strength Training and Athletic Performance Coaching" ;
+    custom:industry "Fitness" ;
+    custom:createdAt "2025-01-15T10:48:00"^^xsd:dateTime .
+
+custom:person050 a custom:Person ;
+    foaf:name "Eleanor Wright" ;
+    foaf:givenName "Eleanor" ;
+    foaf:familyName "Wright" ;
+    foaf:age 50 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-720-555-1502" ;
+    foaf:mbox <mailto:eleanor.wright@denverlibrary.org> ;
+    schema:address "2850 East Colfax Avenue, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Head Librarian" ;
+    custom:occupation "Public Library Management and Community Programs" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T10:49:00"^^xsd:dateTime .
+
+# ── Family 9: The Garcia Family (Los Angeles, USA) ──────────────────────────
+
+custom:person051 a custom:Person ;
+    foaf:name "Miguel Garcia" ;
+    foaf:givenName "Miguel" ;
+    foaf:familyName "Garcia" ;
+    foaf:age 49 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-310-555-4001" ;
+    foaf:mbox <mailto:miguel.garcia@paramount.com> ;
+    schema:address "8560 Sunset Blvd, West Hollywood, CA 90069, USA" ;
+    schema:addressLocality "Los Angeles" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "90069" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Film Director" ;
+    custom:occupation "Feature Film and Documentary Directing" ;
+    custom:industry "Entertainment" ;
+    custom:createdAt "2025-01-15T11:00:00"^^xsd:dateTime .
+
+custom:person052 a custom:Person ;
+    foaf:name "Carmen Garcia" ;
+    foaf:givenName "Carmen" ;
+    foaf:familyName "Garcia" ;
+    foaf:age 46 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-310-555-4002" ;
+    foaf:mbox <mailto:carmen.garcia@caa.com> ;
+    schema:address "8560 Sunset Blvd, West Hollywood, CA 90069, USA" ;
+    schema:addressLocality "Los Angeles" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "90069" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Talent Agent" ;
+    custom:occupation "Celebrity Representation and Contract Negotiation" ;
+    custom:industry "Entertainment" ;
+    custom:createdAt "2025-01-15T11:01:00"^^xsd:dateTime .
+
+custom:person053 a custom:Person ;
+    foaf:name "Sofia Garcia" ;
+    foaf:givenName "Sofia" ;
+    foaf:familyName "Garcia" ;
+    foaf:age 22 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-310-555-4003" ;
+    foaf:mbox <mailto:sofia.garcia@usc.edu> ;
+    schema:address "3551 Trousdale Parkway, Los Angeles, CA 90089, USA" ;
+    schema:addressLocality "Los Angeles" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "90089" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Film Production Student" ;
+    custom:occupation "MFA in Film Production at USC" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:02:00"^^xsd:dateTime .
+
+custom:person054 a custom:Person ;
+    foaf:name "Diego Garcia" ;
+    foaf:givenName "Diego" ;
+    foaf:familyName "Garcia" ;
+    foaf:age 19 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-310-555-4004" ;
+    foaf:mbox <mailto:diego.garcia@berklee.edu> ;
+    schema:address "1140 Boylston Street, Boston, MA 02215, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02215" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Music Composition Student" ;
+    custom:occupation "Jazz Composition Major at Berklee College of Music" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:03:00"^^xsd:dateTime .
+
+# ── Family 10: The O'Brien Family (Boston, USA) ─────────────────────────────
+
+custom:person055 a custom:Person ;
+    foaf:name "Patrick O'Brien" ;
+    foaf:givenName "Patrick" ;
+    foaf:familyName "O'Brien" ;
+    foaf:age 53 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-617-555-4101" ;
+    foaf:mbox <mailto:patrick.obrien@modernatx.com> ;
+    schema:address "340 Beacon Street, Apt 5A, Boston, MA 02116, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02116" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "CEO - Biotech Startup" ;
+    custom:occupation "mRNA Therapeutics Development" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:04:00"^^xsd:dateTime .
+
+custom:person056 a custom:Person ;
+    foaf:name "Siobhan O'Brien" ;
+    foaf:givenName "Siobhan" ;
+    foaf:familyName "O'Brien" ;
+    foaf:age 50 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-4102" ;
+    foaf:mbox <mailto:siobhan.obrien@harvard.edu> ;
+    schema:address "340 Beacon Street, Apt 5A, Boston, MA 02116, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02116" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Professor of Immunology" ;
+    custom:occupation "Autoimmune Disease Research at Harvard Medical School" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:05:00"^^xsd:dateTime .
+
+custom:person057 a custom:Person ;
+    foaf:name "Liam O'Brien" ;
+    foaf:givenName "Liam" ;
+    foaf:familyName "O'Brien" ;
+    foaf:age 26 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-617-555-4103" ;
+    foaf:mbox <mailto:liam.obrien@medtronic.com> ;
+    schema:address "125 Nashua Street, Apt 8B, Boston, MA 02114, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02114" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Biomedical Engineer" ;
+    custom:occupation "Medical Device Prototyping and Testing" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:06:00"^^xsd:dateTime .
+
+# ── Family 11: The Tanaka Family (Seattle, USA) ─────────────────────────────
+
+custom:person058 a custom:Person ;
+    foaf:name "Hiroshi Tanaka" ;
+    foaf:givenName "Hiroshi" ;
+    foaf:familyName "Tanaka" ;
+    foaf:age 44 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-4201" ;
+    foaf:mbox <mailto:hiroshi.tanaka@nvidia.com> ;
+    schema:address "2210 Westlake Avenue N, Apt 9D, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Robotics Engineer" ;
+    custom:occupation "Autonomous Systems and Computer Vision" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T11:07:00"^^xsd:dateTime .
+
+custom:person059 a custom:Person ;
+    foaf:name "Yuki Tanaka" ;
+    foaf:givenName "Yuki" ;
+    foaf:familyName "Tanaka" ;
+    foaf:age 42 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-206-555-4202" ;
+    foaf:mbox <mailto:yuki.tanaka@darkhorse.com> ;
+    schema:address "2210 Westlake Avenue N, Apt 9D, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Graphic Novelist" ;
+    custom:occupation "Science Fiction and Fantasy Graphic Novel Author" ;
+    custom:industry "Media" ;
+    custom:createdAt "2025-01-15T11:08:00"^^xsd:dateTime .
+
+custom:person060 a custom:Person ;
+    foaf:name "Kenji Tanaka" ;
+    foaf:givenName "Kenji" ;
+    foaf:familyName "Tanaka" ;
+    foaf:age 14 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-4203" ;
+    schema:address "2210 Westlake Avenue N, Apt 9D, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "High School Student" ;
+    custom:occupation "Freshman at Garfield High School" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:09:00"^^xsd:dateTime .
+
+# ── Family 12: The Okafor Family (Atlanta, USA) ─────────────────────────────
+
+custom:person061 a custom:Person ;
+    foaf:name "Chinedu Okafor" ;
+    foaf:givenName "Chinedu" ;
+    foaf:familyName "Okafor" ;
+    foaf:age 46 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-404-555-4301" ;
+    foaf:mbox <mailto:chinedu.okafor@bp.com> ;
+    schema:address "200 Peachtree Street NE, Apt 18C, Atlanta, GA 30303, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30303" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Petroleum Engineer" ;
+    custom:occupation "Offshore Drilling Operations and Reservoir Engineering" ;
+    custom:industry "Energy" ;
+    custom:createdAt "2025-01-15T11:10:00"^^xsd:dateTime .
+
+custom:person062 a custom:Person ;
+    foaf:name "Adaeze Okafor" ;
+    foaf:givenName "Adaeze" ;
+    foaf:familyName "Okafor" ;
+    foaf:age 43 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-404-555-4302" ;
+    foaf:mbox <mailto:adaeze.okafor@adaezefashion.com> ;
+    schema:address "200 Peachtree Street NE, Apt 18C, Atlanta, GA 30303, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30303" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Fashion Designer" ;
+    custom:occupation "West African-Inspired Contemporary Fashion" ;
+    custom:industry "Design" ;
+    custom:createdAt "2025-01-15T11:11:00"^^xsd:dateTime .
+
+custom:person063 a custom:Person ;
+    foaf:name "Chioma Okafor" ;
+    foaf:givenName "Chioma" ;
+    foaf:familyName "Okafor" ;
+    foaf:age 18 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-404-555-4303" ;
+    foaf:mbox <mailto:chioma.okafor@spelman.edu> ;
+    schema:address "350 Spelman Lane SW, Atlanta, GA 30314, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30314" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "College Freshman" ;
+    custom:occupation "Pre-Law Studies at Spelman College" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:12:00"^^xsd:dateTime .
+
+# ── Family 13: The Eriksson Family (Denver, USA) ────────────────────────────
+
+custom:person064 a custom:Person ;
+    foaf:name "Lars Eriksson" ;
+    foaf:givenName "Lars" ;
+    foaf:familyName "Eriksson" ;
+    foaf:age 51 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-720-555-4401" ;
+    foaf:mbox <mailto:lars.eriksson@newmont.com> ;
+    schema:address "2860 East Colfax Avenue, Apt 3, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Mining Engineer" ;
+    custom:occupation "Sustainable Mining Operations and Environmental Compliance" ;
+    custom:industry "Mining" ;
+    custom:createdAt "2025-01-15T11:13:00"^^xsd:dateTime .
+
+custom:person065 a custom:Person ;
+    foaf:name "Ingrid Eriksson" ;
+    foaf:givenName "Ingrid" ;
+    foaf:familyName "Eriksson" ;
+    foaf:age 48 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-720-555-4402" ;
+    foaf:mbox <mailto:ingrid.eriksson@corepoweryoga.com> ;
+    schema:address "2860 East Colfax Avenue, Apt 3, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Yoga Studio Owner" ;
+    custom:occupation "Vinyasa and Restorative Yoga Instruction" ;
+    custom:industry "Wellness" ;
+    custom:createdAt "2025-01-15T11:14:00"^^xsd:dateTime .
+
+# ── Individual Professionals (66–80) ────────────────────────────────────────
+
+custom:person066 a custom:Person ;
+    foaf:name "Priyanka Mehta" ;
+    foaf:givenName "Priyanka" ;
+    foaf:familyName "Mehta" ;
+    foaf:age 32 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-415-555-4501" ;
+    foaf:mbox <mailto:priyanka.mehta@openai.com> ;
+    schema:address "1190 Folsom Street, Apt 5C, San Francisco, CA 94103, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94103" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "AI Research Scientist" ;
+    custom:occupation "Reinforcement Learning and AI Safety" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T11:15:00"^^xsd:dateTime .
+
+custom:person067 a custom:Person ;
+    foaf:name "James O'Connor" ;
+    foaf:givenName "James" ;
+    foaf:familyName "O'Connor" ;
+    foaf:age 38 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-503-555-4601" ;
+    foaf:mbox <mailto:james.oconnor@rogueales.com> ;
+    schema:address "825 NW Glisan Street, Portland, OR 97209, USA" ;
+    schema:addressLocality "Portland" ;
+    schema:addressRegion "Oregon" ;
+    schema:postalCode "97209" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Head Brewmaster" ;
+    custom:occupation "Craft Beer Recipe Development and Brewery Management" ;
+    custom:industry "Hospitality" ;
+    custom:createdAt "2025-01-15T11:16:00"^^xsd:dateTime .
+
+custom:person068 a custom:Person ;
+    foaf:name "Aisha Mohammed" ;
+    foaf:givenName "Aisha" ;
+    foaf:familyName "Mohammed" ;
+    foaf:age 35 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-202-555-4701" ;
+    foaf:mbox <mailto:aisha.mohammed@cdc.gov> ;
+    schema:address "1410 K Street NW, Apt 6A, Washington, DC 20005, USA" ;
+    schema:addressLocality "Washington" ;
+    schema:addressRegion "District of Columbia" ;
+    schema:postalCode "20005" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Epidemiologist" ;
+    custom:occupation "Infectious Disease Surveillance and Outbreak Response" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:17:00"^^xsd:dateTime .
+
+custom:person069 a custom:Person ;
+    foaf:name "Connor Walsh" ;
+    foaf:givenName "Connor" ;
+    foaf:familyName "Walsh" ;
+    foaf:age 29 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-4801" ;
+    foaf:mbox <mailto:connor.walsh@wasserman.com> ;
+    schema:address "90 Greenwich Street, Apt 7A, New York, NY 10006, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10006" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Sports Agent" ;
+    custom:occupation "Professional Athlete Representation and Endorsement Deals" ;
+    custom:industry "Sports" ;
+    custom:createdAt "2025-01-15T11:18:00"^^xsd:dateTime .
+
+custom:person070 a custom:Person ;
+    foaf:name "Valentina Rossi" ;
+    foaf:givenName "Valentina" ;
+    foaf:familyName "Rossi" ;
+    foaf:age 34 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-4901" ;
+    foaf:mbox <mailto:valentina.rossi@alinearestaurant.com> ;
+    schema:address "1440 North Lake Shore Drive, Apt 2A, Chicago, IL 60610, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60610" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Executive Chef" ;
+    custom:occupation "Modern Italian Cuisine with Molecular Gastronomy" ;
+    custom:industry "Hospitality" ;
+    custom:createdAt "2025-01-15T11:19:00"^^xsd:dateTime .
+
+custom:person071 a custom:Person ;
+    foaf:name "Takeshi Yamamoto" ;
+    foaf:givenName "Takeshi" ;
+    foaf:familyName "Yamamoto" ;
+    foaf:age 40 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-512-555-5001" ;
+    foaf:mbox <mailto:takeshi.yamamoto@riotgames.com> ;
+    schema:address "4510 South Lamar Blvd, Apt 301, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Lead Game Designer" ;
+    custom:occupation "Open-World RPG Design and Narrative Systems" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T11:20:00"^^xsd:dateTime .
+
+custom:person072 a custom:Person ;
+    foaf:name "Elena Volkov" ;
+    foaf:givenName "Elena" ;
+    foaf:familyName "Volkov" ;
+    foaf:age 31 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-5101" ;
+    foaf:mbox <mailto:elena.volkov@anl.gov> ;
+    schema:address "5810 South Woodlawn Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Nuclear Physicist" ;
+    custom:occupation "Nuclear Fusion Research at Argonne National Laboratory" ;
+    custom:industry "Research" ;
+    custom:createdAt "2025-01-15T11:21:00"^^xsd:dateTime .
+
+custom:person073 a custom:Person ;
+    foaf:name "Marco DeLuca" ;
+    foaf:givenName "Marco" ;
+    foaf:familyName "DeLuca" ;
+    foaf:age 45 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-707-555-5201" ;
+    foaf:mbox <mailto:marco.deluca@delucawinery.com> ;
+    schema:address "1200 Napa Valley Road, Napa, CA 94559, USA" ;
+    schema:addressLocality "Napa" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94559" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Vineyard Owner and Winemaker" ;
+    custom:occupation "Premium Wine Production and Estate Management" ;
+    custom:industry "Agriculture" ;
+    custom:createdAt "2025-01-15T11:22:00"^^xsd:dateTime .
+
+custom:person074 a custom:Person ;
+    foaf:name "Isabelle Dupont" ;
+    foaf:givenName "Isabelle" ;
+    foaf:familyName "Dupont" ;
+    foaf:age 27 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-212-555-5301" ;
+    foaf:mbox <mailto:isabelle.dupont@bergdorfgoodman.com> ;
+    schema:address "435 West 24th Street, Apt 3B, New York, NY 10011, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10011" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Fashion Buyer" ;
+    custom:occupation "Luxury Fashion Procurement and Trend Forecasting" ;
+    custom:industry "Retail" ;
+    custom:createdAt "2025-01-15T11:23:00"^^xsd:dateTime .
+
+custom:person075 a custom:Person ;
+    foaf:name "Kwame Asante" ;
+    foaf:givenName "Kwame" ;
+    foaf:familyName "Asante" ;
+    foaf:age 39 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-404-555-5401" ;
+    foaf:mbox <mailto:kwame.asante@cdc.gov> ;
+    schema:address "195 Peachtree Street NE, Atlanta, GA 30303, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30303" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Public Health Director" ;
+    custom:occupation "Community Health Programs and Disease Prevention" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:24:00"^^xsd:dateTime .
+
+custom:person076 a custom:Person ;
+    foaf:name "Maya Singh" ;
+    foaf:givenName "Maya" ;
+    foaf:familyName "Singh" ;
+    foaf:age 24 ;
+    foaf:gender "female" ;
+    foaf:phone "+91-80-5555-7601" ;
+    foaf:mbox <mailto:maya.singh@infosys.com> ;
+    schema:address "100 Infantry Road, Bangalore, Karnataka 560001, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560001" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "Data Analyst" ;
+    custom:occupation "Business Intelligence and Predictive Analytics" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T11:25:00"^^xsd:dateTime .
+
+custom:person077 a custom:Person ;
+    foaf:name "Henrik Johansson" ;
+    foaf:givenName "Henrik" ;
+    foaf:familyName "Johansson" ;
+    foaf:age 56 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-206-555-5601" ;
+    foaf:mbox <mailto:henrik.johansson@noaa.gov> ;
+    schema:address "7600 Sand Point Way NE, Seattle, WA 98115, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98115" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Senior Marine Biologist" ;
+    custom:occupation "Pacific Northwest Marine Ecosystem Research" ;
+    custom:industry "Research" ;
+    custom:createdAt "2025-01-15T11:26:00"^^xsd:dateTime .
+
+custom:person078 a custom:Person ;
+    foaf:name "Lucia Santos" ;
+    foaf:givenName "Lucia" ;
+    foaf:familyName "Santos" ;
+    foaf:age 30 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-305-555-5701" ;
+    foaf:mbox <mailto:lucia.santos@southernpoverty.org> ;
+    schema:address "1510 Brickell Avenue, Apt 1805, Miami, FL 33129, USA" ;
+    schema:addressLocality "Miami" ;
+    schema:addressRegion "Florida" ;
+    schema:postalCode "33129" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Immigration Lawyer" ;
+    custom:occupation "Asylum Cases and Immigration Policy Advocacy" ;
+    custom:industry "Legal" ;
+    custom:createdAt "2025-01-15T11:27:00"^^xsd:dateTime .
+
+custom:person079 a custom:Person ;
+    foaf:name "Dmitri Volkov" ;
+    foaf:givenName "Dmitri" ;
+    foaf:familyName "Volkov" ;
+    foaf:age 33 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-5801" ;
+    foaf:mbox <mailto:dmitri.volkov@carnegiehall.org> ;
+    schema:address "440 West 24th Street, Apt 10C, New York, NY 10011, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10011" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Concert Pianist" ;
+    custom:occupation "Classical and Contemporary Piano Performance" ;
+    custom:industry "Arts" ;
+    custom:createdAt "2025-01-15T11:28:00"^^xsd:dateTime .
+
+custom:person080 a custom:Person ;
+    foaf:name "Aaliyah Washington" ;
+    foaf:givenName "Aaliyah" ;
+    foaf:familyName "Washington" ;
+    foaf:age 28 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-312-555-5901" ;
+    foaf:mbox <mailto:aaliyah.washington@chicago.gov> ;
+    schema:address "1435 North Lake Shore Drive, Chicago, IL 60610, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60610" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Urban Planner" ;
+    custom:occupation "Transit-Oriented Development and Affordable Housing" ;
+    custom:industry "Government" ;
+    custom:createdAt "2025-01-15T11:29:00"^^xsd:dateTime .
+
+# ── Individual Professionals (81–90) ────────────────────────────────────────
+
+custom:person081 a custom:Person ;
+    foaf:name "Ravi Krishnan" ;
+    foaf:givenName "Ravi" ;
+    foaf:familyName "Krishnan" ;
+    foaf:age 42 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-713-555-6001" ;
+    foaf:mbox <mailto:ravi.krishnan@mdanderson.org> ;
+    schema:address "6630 Fannin Street, Houston, TX 77030, USA" ;
+    schema:addressLocality "Houston" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "77030" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Orthopedic Surgeon" ;
+    custom:occupation "Sports Medicine and Joint Replacement Surgery" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:30:00"^^xsd:dateTime .
+
+custom:person082 a custom:Person ;
+    foaf:name "Sophie Dubois" ;
+    foaf:givenName "Sophie" ;
+    foaf:familyName "Dubois" ;
+    foaf:age 37 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-6101" ;
+    foaf:mbox <mailto:sophie.dubois@mfa.org> ;
+    schema:address "465 Huntington Avenue, Boston, MA 02115, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02115" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Museum Curator" ;
+    custom:occupation "European Impressionist Art Curation at MFA Boston" ;
+    custom:industry "Arts" ;
+    custom:createdAt "2025-01-15T11:31:00"^^xsd:dateTime .
+
+custom:person083 a custom:Person ;
+    foaf:name "Jamal Williams" ;
+    foaf:givenName "Jamal" ;
+    foaf:familyName "Williams" ;
+    foaf:age 31 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-312-555-6201" ;
+    foaf:mbox <mailto:jamal.williams@cpschools.edu> ;
+    schema:address "5830 South Woodlawn Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "High School Basketball Coach" ;
+    custom:occupation "Varsity Basketball Coaching and Youth Athletics" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:32:00"^^xsd:dateTime .
+
+custom:person084 a custom:Person ;
+    foaf:name "Chen Wei" ;
+    foaf:givenName "Wei" ;
+    foaf:familyName "Chen" ;
+    foaf:age 46 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-415-555-6301" ;
+    foaf:mbox <mailto:chen.wei@stanford.edu> ;
+    schema:address "450 Serra Mall, Stanford, CA 94305, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94305" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Professor of Quantum Physics" ;
+    custom:occupation "Quantum Entanglement Research at Stanford" ;
+    custom:industry "Research" ;
+    custom:createdAt "2025-01-15T11:33:00"^^xsd:dateTime .
+
+custom:person085 a custom:Person ;
+    foaf:name "Amara Diallo" ;
+    foaf:givenName "Amara" ;
+    foaf:familyName "Diallo" ;
+    foaf:age 25 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-202-555-6401" ;
+    foaf:mbox <mailto:amara.diallo@unicef.org> ;
+    schema:address "1430 K Street NW, Washington, DC 20005, USA" ;
+    schema:addressLocality "Washington" ;
+    schema:addressRegion "District of Columbia" ;
+    schema:postalCode "20005" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "NGO Program Manager" ;
+    custom:occupation "Children's Education Programs in Sub-Saharan Africa" ;
+    custom:industry "Non-Profit" ;
+    custom:createdAt "2025-01-15T11:34:00"^^xsd:dateTime .
+
+custom:person086 a custom:Person ;
+    foaf:name "Sebastian Muller" ;
+    foaf:givenName "Sebastian" ;
+    foaf:familyName "Muller" ;
+    foaf:age 43 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-313-555-6501" ;
+    foaf:mbox <mailto:sebastian.muller@bmw.com> ;
+    schema:address "1210 Michigan Avenue, Detroit, MI 48226, USA" ;
+    schema:addressLocality "Detroit" ;
+    schema:addressRegion "Michigan" ;
+    schema:postalCode "48226" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Automotive Engineer" ;
+    custom:occupation "Autonomous Driving Systems and Sensor Fusion" ;
+    custom:industry "Manufacturing" ;
+    custom:createdAt "2025-01-15T11:35:00"^^xsd:dateTime .
+
+custom:person087 a custom:Person ;
+    foaf:name "Rosa Hernandez" ;
+    foaf:givenName "Rosa" ;
+    foaf:familyName "Hernandez" ;
+    foaf:age 55 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-305-555-6601" ;
+    foaf:mbox <mailto:rosa.hernandez@gmail.com> ;
+    schema:address "1520 Brickell Avenue, Apt 1200, Miami, FL 33129, USA" ;
+    schema:addressLocality "Miami" ;
+    schema:addressRegion "Florida" ;
+    schema:postalCode "33129" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Retired Federal Judge" ;
+    custom:occupation "Former U.S. District Court Judge, Now Legal Consulting" ;
+    custom:industry "Legal" ;
+    custom:createdAt "2025-01-15T11:36:00"^^xsd:dateTime .
+
+custom:person088 a custom:Person ;
+    foaf:name "Yusuf Ali" ;
+    foaf:givenName "Yusuf" ;
+    foaf:familyName "Ali" ;
+    foaf:age 36 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-6701" ;
+    foaf:mbox <mailto:yusuf.ali@skidmore.com> ;
+    schema:address "205 Park Avenue, Apt 22A, New York, NY 10166, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10166" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Structural Engineer" ;
+    custom:occupation "Skyscraper Design and Seismic Retrofitting" ;
+    custom:industry "Construction" ;
+    custom:createdAt "2025-01-15T11:37:00"^^xsd:dateTime .
+
+custom:person089 a custom:Person ;
+    foaf:name "Natasha Petrov" ;
+    foaf:givenName "Natasha" ;
+    foaf:familyName "Petrov" ;
+    foaf:age 29 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-617-555-6801" ;
+    foaf:mbox <mailto:natasha.petrov@brighamhealth.org> ;
+    schema:address "130 Nashua Street, Apt 4C, Boston, MA 02114, USA" ;
+    schema:addressLocality "Boston" ;
+    schema:addressRegion "Massachusetts" ;
+    schema:postalCode "02114" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Biostatistician" ;
+    custom:occupation "Clinical Trial Design and Statistical Analysis" ;
+    custom:industry "Healthcare" ;
+    custom:createdAt "2025-01-15T11:38:00"^^xsd:dateTime .
+
+custom:person090 a custom:Person ;
+    foaf:name "Kofi Mensah" ;
+    foaf:givenName "Kofi" ;
+    foaf:familyName "Mensah" ;
+    foaf:age 47 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-404-555-6901" ;
+    foaf:mbox <mailto:kofi.mensah@ups.com> ;
+    schema:address "198 Peachtree Street NE, Atlanta, GA 30303, USA" ;
+    schema:addressLocality "Atlanta" ;
+    schema:addressRegion "Georgia" ;
+    schema:postalCode "30303" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Shipping Logistics Manager" ;
+    custom:occupation "Global Supply Chain Optimization and Route Planning" ;
+    custom:industry "Logistics" ;
+    custom:createdAt "2025-01-15T11:39:00"^^xsd:dateTime .
+
+# ── Individual Professionals (91–100) ───────────────────────────────────────
+
+custom:person091 a custom:Person ;
+    foaf:name "Aiko Nakamura" ;
+    foaf:givenName "Aiko" ;
+    foaf:familyName "Nakamura" ;
+    foaf:age 33 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-206-555-7001" ;
+    foaf:mbox <mailto:aiko.nakamura@noburestaurants.com> ;
+    schema:address "2230 Westlake Avenue N, Seattle, WA 98109, USA" ;
+    schema:addressLocality "Seattle" ;
+    schema:addressRegion "Washington" ;
+    schema:postalCode "98109" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Head Sushi Chef" ;
+    custom:occupation "Traditional Edomae Sushi Preparation" ;
+    custom:industry "Hospitality" ;
+    custom:createdAt "2025-01-15T11:40:00"^^xsd:dateTime .
+
+custom:person092 a custom:Person ;
+    foaf:name "Paul Thompson" ;
+    foaf:givenName "Paul" ;
+    foaf:familyName "Thompson" ;
+    foaf:age 62 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-214-555-7101" ;
+    foaf:mbox <mailto:paul.thompson@retired.army.mil> ;
+    schema:address "3210 Mockingbird Lane, Dallas, TX 75205, USA" ;
+    schema:addressLocality "Dallas" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "75205" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Retired Army Colonel" ;
+    custom:occupation "Former Infantry Commander, Now Military History Author" ;
+    custom:industry "Military" ;
+    custom:createdAt "2025-01-15T11:41:00"^^xsd:dateTime .
+
+custom:person093 a custom:Person ;
+    foaf:name "Mei Lin Chang" ;
+    foaf:givenName "Mei Lin" ;
+    foaf:familyName "Chang" ;
+    foaf:age 38 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-415-555-7201" ;
+    foaf:mbox <mailto:meilin.chang@fenwick.com> ;
+    schema:address "1195 Folsom Street, Apt 8A, San Francisco, CA 94103, USA" ;
+    schema:addressLocality "San Francisco" ;
+    schema:addressRegion "California" ;
+    schema:postalCode "94103" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Patent Lawyer" ;
+    custom:occupation "Technology Patent Prosecution and IP Litigation" ;
+    custom:industry "Legal" ;
+    custom:createdAt "2025-01-15T11:42:00"^^xsd:dateTime .
+
+custom:person094 a custom:Person ;
+    foaf:name "Abdul Rahman" ;
+    foaf:givenName "Abdul" ;
+    foaf:familyName "Rahman" ;
+    foaf:age 41 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-512-555-7301" ;
+    foaf:mbox <mailto:abdul.rahman@utexas.edu> ;
+    schema:address "4515 South Lamar Blvd, Austin, TX 78745, USA" ;
+    schema:addressLocality "Austin" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "78745" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Professor of Civil Engineering" ;
+    custom:occupation "Earthquake-Resistant Infrastructure Research at UT Austin" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:43:00"^^xsd:dateTime .
+
+custom:person095 a custom:Person ;
+    foaf:name "Freya Nielsen" ;
+    foaf:givenName "Freya" ;
+    foaf:familyName "Nielsen" ;
+    foaf:age 26 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-720-555-7401" ;
+    foaf:mbox <mailto:freya.nielsen@vestas.com> ;
+    schema:address "2880 East Colfax Avenue, Denver, CO 80206, USA" ;
+    schema:addressLocality "Denver" ;
+    schema:addressRegion "Colorado" ;
+    schema:postalCode "80206" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Renewable Energy Engineer" ;
+    custom:occupation "Wind Turbine Design and Grid Integration" ;
+    custom:industry "Energy" ;
+    custom:createdAt "2025-01-15T11:44:00"^^xsd:dateTime .
+
+custom:person096 a custom:Person ;
+    foaf:name "Giovanni Bianchi" ;
+    foaf:givenName "Giovanni" ;
+    foaf:familyName "Bianchi" ;
+    foaf:age 50 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-212-555-7501" ;
+    foaf:mbox <mailto:giovanni.bianchi@metopera.org> ;
+    schema:address "160 East 72nd Street, New York, NY 10021, USA" ;
+    schema:addressLocality "New York" ;
+    schema:addressRegion "New York" ;
+    schema:postalCode "10021" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Opera Singer" ;
+    custom:occupation "Lead Tenor at the Metropolitan Opera" ;
+    custom:industry "Arts" ;
+    custom:createdAt "2025-01-15T11:45:00"^^xsd:dateTime .
+
+custom:person097 a custom:Person ;
+    foaf:name "Sunita Rao" ;
+    foaf:givenName "Sunita" ;
+    foaf:familyName "Rao" ;
+    foaf:age 44 ;
+    foaf:gender "female" ;
+    foaf:phone "+91-80-5555-7701" ;
+    foaf:mbox <mailto:sunita.rao@delhipublicschool.in> ;
+    schema:address "50 Residency Road, Bangalore, Karnataka 560025, India" ;
+    schema:addressLocality "Bangalore" ;
+    schema:addressRegion "Karnataka" ;
+    schema:postalCode "560025" ;
+    schema:addressCountry "India" ;
+    schema:jobTitle "School Counselor" ;
+    custom:occupation "Student Mental Health and Career Guidance" ;
+    custom:industry "Education" ;
+    custom:createdAt "2025-01-15T11:46:00"^^xsd:dateTime .
+
+custom:person098 a custom:Person ;
+    foaf:name "Derek Morrison" ;
+    foaf:givenName "Derek" ;
+    foaf:familyName "Morrison" ;
+    foaf:age 35 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-312-555-7801" ;
+    foaf:mbox <mailto:derek.morrison@chicagofire.org> ;
+    schema:address "5825 South Woodlawn Avenue, Chicago, IL 60637, USA" ;
+    schema:addressLocality "Chicago" ;
+    schema:addressRegion "Illinois" ;
+    schema:postalCode "60637" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Firefighter Captain" ;
+    custom:occupation "Engine Company Captain and Fire Safety Training" ;
+    custom:industry "Public Safety" ;
+    custom:createdAt "2025-01-15T11:47:00"^^xsd:dateTime .
+
+custom:person099 a custom:Person ;
+    foaf:name "Leila Hadid" ;
+    foaf:givenName "Leila" ;
+    foaf:familyName "Hadid" ;
+    foaf:age 30 ;
+    foaf:gender "female" ;
+    foaf:phone "+1-214-555-7901" ;
+    foaf:mbox <mailto:leila.hadid@lockheedmartin.com> ;
+    schema:address "3220 Mockingbird Lane, Dallas, TX 75205, USA" ;
+    schema:addressLocality "Dallas" ;
+    schema:addressRegion "Texas" ;
+    schema:postalCode "75205" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Aerospace Engineer" ;
+    custom:occupation "Next-Generation Satellite Propulsion Systems" ;
+    custom:industry "Technology" ;
+    custom:createdAt "2025-01-15T11:48:00"^^xsd:dateTime .
+
+custom:person100 a custom:Person ;
+    foaf:name "Victor Oduya" ;
+    foaf:givenName "Victor" ;
+    foaf:familyName "Oduya" ;
+    foaf:age 57 ;
+    foaf:gender "male" ;
+    foaf:phone "+1-202-555-8001" ;
+    foaf:mbox <mailto:victor.oduya@state.gov> ;
+    schema:address "1435 K Street NW, Washington, DC 20005, USA" ;
+    schema:addressLocality "Washington" ;
+    schema:addressRegion "District of Columbia" ;
+    schema:postalCode "20005" ;
+    schema:addressCountry "USA" ;
+    schema:jobTitle "Retired Diplomat" ;
+    custom:occupation "Former U.S. Ambassador to Kenya, Now Policy Consultant" ;
+    custom:industry "Government" ;
+    custom:createdAt "2025-01-15T11:49:00"^^xsd:dateTime .
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SUBCLASS TYPE ASSERTIONS (rdfs:subClassOf in action)
+#
+# In OWL, if custom:Student rdfs:subClassOf custom:Person, then every instance
+# of custom:Student is automatically also an instance of custom:Person.
+# A reasoner would infer the custom:Person type, but we also assert it
+# explicitly for systems without reasoning.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── Students (custom:Student rdfs:subClassOf custom:Person) ─────────────────
+custom:person003 a custom:Student .   # Ananya Sharma — CS undergrad
+custom:person004 a custom:Student .   # Arjun Sharma — high school
+custom:person010 a custom:Student .   # Sophie Chen — elementary school
+custom:person017 a custom:Student .   # Rohan Patel — pre-med undergrad
+custom:person020 a custom:Student .   # Daniel Kim — high school
+custom:person023 a custom:Student .   # Lucas Rodriguez — middle school
+custom:person038 a custom:Student .   # Hannah Scott — PhD candidate
+
+# ── Employees (custom:Employee rdfs:subClassOf custom:Person) ───────────────
+custom:person001 a custom:Employee .  # Rajesh Sharma — Software Architect
+custom:person002 a custom:Employee .  # Priya Sharma — Cardiologist
+custom:person005 a custom:Employee .  # Michael Johnson — Investment Banker
+custom:person006 a custom:Employee .  # Sarah Johnson — Corporate Lawyer
+custom:person007 a custom:Employee .  # Emily Johnson — Marketing Analyst
+custom:person008 a custom:Employee .  # David Chen — ML Engineer
+custom:person009 a custom:Employee .  # Lisa Chen — UX Designer
+custom:person011 a custom:Employee .  # James Williams — Professor
+custom:person012 a custom:Employee .  # Maria Williams — Head Nurse
+custom:person013 a custom:Employee .  # Tyler Williams — Civil Engineer
+custom:person014 a custom:Employee .  # Emma Williams — Graphic Designer
+custom:person015 a custom:Employee .  # Amit Patel — Neurosurgeon
+custom:person016 a custom:Employee .  # Neha Patel — Pharmacist
+custom:person018 a custom:Employee .  # Robert Kim — Product Manager
+custom:person019 a custom:Employee .  # Jennifer Kim — Financial Analyst
+custom:person021 a custom:Employee .  # Carlos Rodriguez — DevOps Engineer
+custom:person022 a custom:Employee .  # Isabella Rodriguez — Architect
+custom:person024 a custom:Employee .  # Fatima Al-Hassan — Data Scientist
+custom:person025 a custom:Employee .  # Kevin Park — Backend Engineer
+custom:person026 a custom:Employee .  # Amanda Foster — Journalist
+custom:person028 a custom:Employee .  # Rachel Green — Veterinarian
+custom:person029 a custom:Employee .  # Omar Hassan — Cybersecurity Analyst
+custom:person030 a custom:Employee .  # Sophia Martinez — Interior Designer
+custom:person031 a custom:Employee .  # William Taylor — Restaurant Owner
+custom:person032 a custom:Employee .  # Grace Lee — Clinical Psychologist
+custom:person033 a custom:Employee .  # Nathan Wright — Real Estate Agent
+custom:person034 a custom:Employee .  # Olivia Davis — Environmental Scientist
+custom:person035 a custom:Employee .  # Benjamin Clark — Mechanical Engineer
+custom:person036 a custom:Employee .  # Chloe Anderson — Social Media Manager
+custom:person037 a custom:Employee .  # Alexander Murphy — Airline Pilot
+custom:person039 a custom:Employee .  # Daniel Cooper — CFO
+custom:person040 a custom:Employee .  # Mia Torres — Pediatrician
+custom:person041 a custom:Employee .  # Ethan Brooks — Software Developer
+custom:person042 a custom:Employee .  # Lily Nguyen — Civil Rights Lawyer
+custom:person043 a custom:Employee .  # Samuel Jackson — Construction Manager
+custom:person044 a custom:Employee .  # Zoe Campbell — Freelance Photographer
+custom:person045 a custom:Employee .  # Ryan Mitchell — Physical Therapist
+custom:person046 a custom:Employee .  # Ava Robinson — High School Principal
+custom:person047 a custom:Employee .  # Jack Turner — Electrician
+custom:person048 a custom:Employee .  # Nadia Petrova — Ballet Instructor
+custom:person049 a custom:Employee .  # Marcus Reed — Personal Trainer
+custom:person050 a custom:Employee .  # Eleanor Wright — Head Librarian
+
+# ── Retirees (custom:Retiree rdfs:subClassOf custom:Person) ─────────────────
+custom:person027 a custom:Retiree .   # Thomas Brown — Retired High School Teacher
+custom:person087 a custom:Retiree .   # Rosa Hernandez — Retired Federal Judge
+custom:person092 a custom:Retiree .   # Paul Thompson — Retired Army Colonel
+custom:person100 a custom:Retiree .   # Victor Oduya — Retired Diplomat
+
+# ── Students (051-100) ──────────────────────────────────────────────────────
+custom:person053 a custom:Student .   # Sofia Garcia — Film Production MFA
+custom:person054 a custom:Student .   # Diego Garcia — Music Composition at Berklee
+custom:person060 a custom:Student .   # Kenji Tanaka — High School Freshman
+custom:person063 a custom:Student .   # Chioma Okafor — College Freshman
+
+# ── Employees (051-100) ─────────────────────────────────────────────────────
+custom:person051 a custom:Employee .  # Miguel Garcia — Film Director
+custom:person052 a custom:Employee .  # Carmen Garcia — Talent Agent
+custom:person055 a custom:Employee .  # Patrick O'Brien — Biotech CEO
+custom:person056 a custom:Employee .  # Siobhan O'Brien — Professor
+custom:person057 a custom:Employee .  # Liam O'Brien — Biomedical Engineer
+custom:person058 a custom:Employee .  # Hiroshi Tanaka — Robotics Engineer
+custom:person059 a custom:Employee .  # Yuki Tanaka — Graphic Novelist
+custom:person061 a custom:Employee .  # Chinedu Okafor — Petroleum Engineer
+custom:person062 a custom:Employee .  # Adaeze Okafor — Fashion Designer
+custom:person064 a custom:Employee .  # Lars Eriksson — Mining Engineer
+custom:person065 a custom:Employee .  # Ingrid Eriksson — Yoga Studio Owner
+custom:person066 a custom:Employee .  # Priyanka Mehta — AI Research Scientist
+custom:person067 a custom:Employee .  # James O'Connor — Brewmaster
+custom:person068 a custom:Employee .  # Aisha Mohammed — Epidemiologist
+custom:person069 a custom:Employee .  # Connor Walsh — Sports Agent
+custom:person070 a custom:Employee .  # Valentina Rossi — Executive Chef
+custom:person071 a custom:Employee .  # Takeshi Yamamoto — Game Designer
+custom:person072 a custom:Employee .  # Elena Volkov — Nuclear Physicist
+custom:person073 a custom:Employee .  # Marco DeLuca — Vineyard Owner
+custom:person074 a custom:Employee .  # Isabelle Dupont — Fashion Buyer
+custom:person075 a custom:Employee .  # Kwame Asante — Public Health Director
+custom:person076 a custom:Employee .  # Maya Singh — Data Analyst
+custom:person077 a custom:Employee .  # Henrik Johansson — Marine Biologist
+custom:person078 a custom:Employee .  # Lucia Santos — Immigration Lawyer
+custom:person079 a custom:Employee .  # Dmitri Volkov — Concert Pianist
+custom:person080 a custom:Employee .  # Aaliyah Washington — Urban Planner
+custom:person081 a custom:Employee .  # Ravi Krishnan — Orthopedic Surgeon
+custom:person082 a custom:Employee .  # Sophie Dubois — Museum Curator
+custom:person083 a custom:Employee .  # Jamal Williams — Basketball Coach
+custom:person084 a custom:Employee .  # Chen Wei — Quantum Physics Professor
+custom:person085 a custom:Employee .  # Amara Diallo — NGO Program Manager
+custom:person086 a custom:Employee .  # Sebastian Muller — Automotive Engineer
+custom:person088 a custom:Employee .  # Yusuf Ali — Structural Engineer
+custom:person089 a custom:Employee .  # Natasha Petrov — Biostatistician
+custom:person090 a custom:Employee .  # Kofi Mensah — Logistics Manager
+custom:person091 a custom:Employee .  # Aiko Nakamura — Sushi Chef
+custom:person093 a custom:Employee .  # Mei Lin Chang — Patent Lawyer
+custom:person094 a custom:Employee .  # Abdul Rahman — CE Professor
+custom:person095 a custom:Employee .  # Freya Nielsen — Renewable Energy Engineer
+custom:person096 a custom:Employee .  # Giovanni Bianchi — Opera Singer
+custom:person097 a custom:Employee .  # Sunita Rao — School Counselor
+custom:person098 a custom:Employee .  # Derek Morrison — Firefighter Captain
+custom:person099 a custom:Employee .  # Leila Hadid — Aerospace Engineer
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BIRTH DATES (owl:FunctionalProperty — each person has at most one)
+#
+# The ontology declares custom:birthDate as owl:FunctionalProperty, meaning
+# a reasoner would flag an error if any person had two different birth dates.
+# Dates are computed as (2025 - age) with realistic month/day values.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+custom:person001 custom:birthDate "1980-03-12"^^xsd:date .  # Rajesh, age 45
+custom:person002 custom:birthDate "1983-07-25"^^xsd:date .  # Priya, age 42
+custom:person003 custom:birthDate "2005-01-18"^^xsd:date .  # Ananya, age 20
+custom:person004 custom:birthDate "2008-09-05"^^xsd:date .  # Arjun, age 17
+custom:person005 custom:birthDate "1975-11-30"^^xsd:date .  # Michael, age 50
+custom:person006 custom:birthDate "1977-04-14"^^xsd:date .  # Sarah, age 48
+custom:person007 custom:birthDate "2001-06-22"^^xsd:date .  # Emily, age 24
+custom:person008 custom:birthDate "1987-02-08"^^xsd:date .  # David, age 38
+custom:person009 custom:birthDate "1989-10-17"^^xsd:date .  # Lisa, age 36
+custom:person010 custom:birthDate "2015-05-03"^^xsd:date .  # Sophie, age 10
+custom:person011 custom:birthDate "1970-08-20"^^xsd:date .  # James, age 55
+custom:person012 custom:birthDate "1973-12-01"^^xsd:date .  # Maria, age 52
+custom:person013 custom:birthDate "1997-03-29"^^xsd:date .  # Tyler, age 28
+custom:person014 custom:birthDate "2000-07-11"^^xsd:date .  # Emma, age 25
+custom:person015 custom:birthDate "1978-01-06"^^xsd:date .  # Amit, age 47
+custom:person016 custom:birthDate "1981-09-19"^^xsd:date .  # Neha, age 44
+custom:person017 custom:birthDate "2004-04-27"^^xsd:date .  # Rohan, age 21
+custom:person018 custom:birthDate "1982-06-13"^^xsd:date .  # Robert, age 43
+custom:person019 custom:birthDate "1984-11-08"^^xsd:date .  # Jennifer, age 41
+custom:person020 custom:birthDate "2010-08-21"^^xsd:date .  # Daniel Kim, age 15
+custom:person021 custom:birthDate "1985-05-16"^^xsd:date .  # Carlos, age 40
+custom:person022 custom:birthDate "1987-02-28"^^xsd:date .  # Isabella, age 38
+custom:person023 custom:birthDate "2013-10-09"^^xsd:date .  # Lucas, age 12
+custom:person024 custom:birthDate "1991-03-04"^^xsd:date .  # Fatima, age 34
+custom:person025 custom:birthDate "1988-07-22"^^xsd:date .  # Kevin, age 37
+custom:person026 custom:birthDate "1996-01-15"^^xsd:date .  # Amanda, age 29
+custom:person027 custom:birthDate "1965-06-30"^^xsd:date .  # Thomas, age 60
+custom:person028 custom:birthDate "1994-04-11"^^xsd:date .  # Rachel, age 31
+custom:person029 custom:birthDate "1992-08-18"^^xsd:date .  # Omar, age 33
+custom:person030 custom:birthDate "1998-12-05"^^xsd:date .  # Sophia, age 27
+custom:person031 custom:birthDate "1980-09-23"^^xsd:date .  # William, age 45
+custom:person032 custom:birthDate "1986-02-14"^^xsd:date .  # Grace, age 39
+custom:person033 custom:birthDate "1973-05-07"^^xsd:date .  # Nathan, age 52
+custom:person034 custom:birthDate "1999-11-19"^^xsd:date .  # Olivia, age 26
+custom:person035 custom:birthDate "1990-01-26"^^xsd:date .  # Benjamin, age 35
+custom:person036 custom:birthDate "1995-06-08"^^xsd:date .  # Chloe, age 30
+custom:person037 custom:birthDate "1984-03-17"^^xsd:date .  # Alexander, age 41
+custom:person038 custom:birthDate "2002-07-31"^^xsd:date .  # Hannah, age 23
+custom:person039 custom:birthDate "1977-10-12"^^xsd:date .  # Daniel Cooper, age 48
+custom:person040 custom:birthDate "1992-05-24"^^xsd:date .  # Mia, age 33
+custom:person041 custom:birthDate "1996-09-02"^^xsd:date .  # Ethan, age 29
+custom:person042 custom:birthDate "1989-04-16"^^xsd:date .  # Lily, age 36
+custom:person043 custom:birthDate "1967-12-28"^^xsd:date .  # Samuel, age 58
+custom:person044 custom:birthDate "2003-03-10"^^xsd:date .  # Zoe, age 22
+custom:person045 custom:birthDate "1993-08-14"^^xsd:date .  # Ryan, age 32
+custom:person046 custom:birthDate "1985-01-20"^^xsd:date .  # Ava, age 40
+custom:person047 custom:birthDate "1981-07-04"^^xsd:date .  # Jack, age 44
+custom:person048 custom:birthDate "1997-02-09"^^xsd:date .  # Nadia, age 28
+custom:person049 custom:birthDate "1989-11-26"^^xsd:date .  # Marcus, age 36
+custom:person050 custom:birthDate "1975-04-18"^^xsd:date .  # Eleanor, age 50
+custom:person051 custom:birthDate "1976-08-15"^^xsd:date .  # Miguel, age 49
+custom:person052 custom:birthDate "1979-03-22"^^xsd:date .  # Carmen, age 46
+custom:person053 custom:birthDate "2003-06-10"^^xsd:date .  # Sofia, age 22
+custom:person054 custom:birthDate "2006-11-28"^^xsd:date .  # Diego, age 19
+custom:person055 custom:birthDate "1972-01-14"^^xsd:date .  # Patrick, age 53
+custom:person056 custom:birthDate "1975-05-30"^^xsd:date .  # Siobhan, age 50
+custom:person057 custom:birthDate "1999-09-07"^^xsd:date .  # Liam, age 26
+custom:person058 custom:birthDate "1981-04-19"^^xsd:date .  # Hiroshi, age 44
+custom:person059 custom:birthDate "1983-07-03"^^xsd:date .  # Yuki, age 42
+custom:person060 custom:birthDate "2011-02-25"^^xsd:date .  # Kenji, age 14
+custom:person061 custom:birthDate "1979-10-08"^^xsd:date .  # Chinedu, age 46
+custom:person062 custom:birthDate "1982-06-17"^^xsd:date .  # Adaeze, age 43
+custom:person063 custom:birthDate "2007-08-30"^^xsd:date .  # Chioma, age 18
+custom:person064 custom:birthDate "1974-12-04"^^xsd:date .  # Lars, age 51
+custom:person065 custom:birthDate "1977-03-11"^^xsd:date .  # Ingrid, age 48
+custom:person066 custom:birthDate "1993-05-21"^^xsd:date .  # Priyanka, age 32
+custom:person067 custom:birthDate "1987-09-14"^^xsd:date .  # James O'Connor, age 38
+custom:person068 custom:birthDate "1990-01-27"^^xsd:date .  # Aisha, age 35
+custom:person069 custom:birthDate "1996-04-05"^^xsd:date .  # Connor, age 29
+custom:person070 custom:birthDate "1991-11-18"^^xsd:date .  # Valentina, age 34
+custom:person071 custom:birthDate "1985-02-12"^^xsd:date .  # Takeshi, age 40
+custom:person072 custom:birthDate "1994-07-09"^^xsd:date .  # Elena, age 31
+custom:person073 custom:birthDate "1980-10-25"^^xsd:date .  # Marco, age 45
+custom:person074 custom:birthDate "1998-03-16"^^xsd:date .  # Isabelle, age 27
+custom:person075 custom:birthDate "1986-08-02"^^xsd:date .  # Kwame, age 39
+custom:person076 custom:birthDate "2001-12-13"^^xsd:date .  # Maya, age 24
+custom:person077 custom:birthDate "1969-06-20"^^xsd:date .  # Henrik, age 56
+custom:person078 custom:birthDate "1995-04-08"^^xsd:date .  # Lucia, age 30
+custom:person079 custom:birthDate "1992-09-30"^^xsd:date .  # Dmitri, age 33
+custom:person080 custom:birthDate "1997-01-23"^^xsd:date .  # Aaliyah, age 28
+custom:person081 custom:birthDate "1983-11-05"^^xsd:date .  # Ravi, age 42
+custom:person082 custom:birthDate "1988-02-19"^^xsd:date .  # Sophie D., age 37
+custom:person083 custom:birthDate "1994-06-14"^^xsd:date .  # Jamal, age 31
+custom:person084 custom:birthDate "1979-08-28"^^xsd:date .  # Chen Wei, age 46
+custom:person085 custom:birthDate "2000-10-11"^^xsd:date .  # Amara, age 25
+custom:person086 custom:birthDate "1982-03-07"^^xsd:date .  # Sebastian, age 43
+custom:person087 custom:birthDate "1970-07-22"^^xsd:date .  # Rosa, age 55
+custom:person088 custom:birthDate "1989-05-16"^^xsd:date .  # Yusuf, age 36
+custom:person089 custom:birthDate "1996-12-01"^^xsd:date .  # Natasha, age 29
+custom:person090 custom:birthDate "1978-04-29"^^xsd:date .  # Kofi, age 47
+custom:person091 custom:birthDate "1992-01-18"^^xsd:date .  # Aiko, age 33
+custom:person092 custom:birthDate "1963-07-04"^^xsd:date .  # Paul, age 62
+custom:person093 custom:birthDate "1987-11-09"^^xsd:date .  # Mei Lin, age 38
+custom:person094 custom:birthDate "1984-02-15"^^xsd:date .  # Abdul, age 41
+custom:person095 custom:birthDate "1999-08-26"^^xsd:date .  # Freya, age 26
+custom:person096 custom:birthDate "1975-12-20"^^xsd:date .  # Giovanni, age 50
+custom:person097 custom:birthDate "1981-06-03"^^xsd:date .  # Sunita, age 44
+custom:person098 custom:birthDate "1990-03-25"^^xsd:date .  # Derek, age 35
+custom:person099 custom:birthDate "1995-10-14"^^xsd:date .  # Leila, age 30
+custom:person100 custom:birthDate "1968-05-31"^^xsd:date .  # Victor, age 57
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RELATIONSHIPS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── Marriages (spouseOf — symmetric) ────────────────────────────────────────
+
+custom:person001 rel:spouseOf custom:person002 .  # Rajesh ↔ Priya Sharma
+custom:person002 rel:spouseOf custom:person001 .
+
+custom:person005 rel:spouseOf custom:person006 .  # Michael ↔ Sarah Johnson
+custom:person006 rel:spouseOf custom:person005 .
+
+custom:person008 rel:spouseOf custom:person009 .  # David ↔ Lisa Chen
+custom:person009 rel:spouseOf custom:person008 .
+
+custom:person011 rel:spouseOf custom:person012 .  # James ↔ Maria Williams
+custom:person012 rel:spouseOf custom:person011 .
+
+custom:person015 rel:spouseOf custom:person016 .  # Amit ↔ Neha Patel
+custom:person016 rel:spouseOf custom:person015 .
+
+custom:person018 rel:spouseOf custom:person019 .  # Robert ↔ Jennifer Kim
+custom:person019 rel:spouseOf custom:person018 .
+
+custom:person021 rel:spouseOf custom:person022 .  # Carlos ↔ Isabella Rodriguez
+custom:person022 rel:spouseOf custom:person021 .
+
+custom:person033 rel:spouseOf custom:person050 .  # Nathan ↔ Eleanor Wright
+custom:person050 rel:spouseOf custom:person033 .
+
+custom:person051 rel:spouseOf custom:person052 .  # Miguel ↔ Carmen Garcia
+custom:person052 rel:spouseOf custom:person051 .
+
+custom:person055 rel:spouseOf custom:person056 .  # Patrick ↔ Siobhan O'Brien
+custom:person056 rel:spouseOf custom:person055 .
+
+custom:person058 rel:spouseOf custom:person059 .  # Hiroshi ↔ Yuki Tanaka
+custom:person059 rel:spouseOf custom:person058 .
+
+custom:person061 rel:spouseOf custom:person062 .  # Chinedu ↔ Adaeze Okafor
+custom:person062 rel:spouseOf custom:person061 .
+
+custom:person064 rel:spouseOf custom:person065 .  # Lars ↔ Ingrid Eriksson
+custom:person065 rel:spouseOf custom:person064 .
+
+# ── Parent-Child Relationships ──────────────────────────────────────────────
+
+# Sharma family
+custom:person001 rel:parentOf custom:person003 .  # Rajesh → Ananya
+custom:person001 rel:parentOf custom:person004 .  # Rajesh → Arjun
+custom:person002 rel:parentOf custom:person003 .  # Priya → Ananya
+custom:person002 rel:parentOf custom:person004 .  # Priya → Arjun
+custom:person003 rel:childOf custom:person001 .
+custom:person003 rel:childOf custom:person002 .
+custom:person004 rel:childOf custom:person001 .
+custom:person004 rel:childOf custom:person002 .
+
+# Johnson family
+custom:person005 rel:parentOf custom:person007 .  # Michael → Emily
+custom:person006 rel:parentOf custom:person007 .  # Sarah → Emily
+custom:person007 rel:childOf custom:person005 .
+custom:person007 rel:childOf custom:person006 .
+
+# Chen family
+custom:person008 rel:parentOf custom:person010 .  # David → Sophie
+custom:person009 rel:parentOf custom:person010 .  # Lisa → Sophie
+custom:person010 rel:childOf custom:person008 .
+custom:person010 rel:childOf custom:person009 .
+
+# Williams family
+custom:person011 rel:parentOf custom:person013 .  # James → Tyler
+custom:person011 rel:parentOf custom:person014 .  # James → Emma
+custom:person012 rel:parentOf custom:person013 .  # Maria → Tyler
+custom:person012 rel:parentOf custom:person014 .  # Maria → Emma
+custom:person013 rel:childOf custom:person011 .
+custom:person013 rel:childOf custom:person012 .
+custom:person014 rel:childOf custom:person011 .
+custom:person014 rel:childOf custom:person012 .
+
+# Patel family
+custom:person015 rel:parentOf custom:person017 .  # Amit → Rohan
+custom:person016 rel:parentOf custom:person017 .  # Neha → Rohan
+custom:person017 rel:childOf custom:person015 .
+custom:person017 rel:childOf custom:person016 .
+
+# Kim family
+custom:person018 rel:parentOf custom:person020 .  # Robert → Daniel
+custom:person019 rel:parentOf custom:person020 .  # Jennifer → Daniel
+custom:person020 rel:childOf custom:person018 .
+custom:person020 rel:childOf custom:person019 .
+
+# Rodriguez family
+custom:person021 rel:parentOf custom:person023 .  # Carlos → Lucas
+custom:person022 rel:parentOf custom:person023 .  # Isabella → Lucas
+custom:person023 rel:childOf custom:person021 .
+custom:person023 rel:childOf custom:person022 .
+
+# Garcia family
+custom:person051 rel:parentOf custom:person053 .  # Miguel → Sofia
+custom:person051 rel:parentOf custom:person054 .  # Miguel → Diego
+custom:person052 rel:parentOf custom:person053 .  # Carmen → Sofia
+custom:person052 rel:parentOf custom:person054 .  # Carmen → Diego
+custom:person053 rel:childOf custom:person051 .
+custom:person053 rel:childOf custom:person052 .
+custom:person054 rel:childOf custom:person051 .
+custom:person054 rel:childOf custom:person052 .
+
+# O'Brien family
+custom:person055 rel:parentOf custom:person057 .  # Patrick → Liam
+custom:person056 rel:parentOf custom:person057 .  # Siobhan → Liam
+custom:person057 rel:childOf custom:person055 .
+custom:person057 rel:childOf custom:person056 .
+
+# Tanaka family
+custom:person058 rel:parentOf custom:person060 .  # Hiroshi → Kenji
+custom:person059 rel:parentOf custom:person060 .  # Yuki → Kenji
+custom:person060 rel:childOf custom:person058 .
+custom:person060 rel:childOf custom:person059 .
+
+# Okafor family
+custom:person061 rel:parentOf custom:person063 .  # Chinedu → Chioma
+custom:person062 rel:parentOf custom:person063 .  # Adaeze → Chioma
+custom:person063 rel:childOf custom:person061 .
+custom:person063 rel:childOf custom:person062 .
+
+# ── Siblings (siblingOf — symmetric) ────────────────────────────────────────
+
+custom:person003 rel:siblingOf custom:person004 .  # Ananya ↔ Arjun Sharma
+custom:person004 rel:siblingOf custom:person003 .
+
+custom:person013 rel:siblingOf custom:person014 .  # Tyler ↔ Emma Williams
+custom:person014 rel:siblingOf custom:person013 .
+
+custom:person053 rel:siblingOf custom:person054 .  # Sofia ↔ Diego Garcia
+custom:person054 rel:siblingOf custom:person053 .
+
+# ── Friendships (friendOf) ──────────────────────────────────────────────────
+
+# Tech friends in San Francisco
+custom:person008 rel:friendOf custom:person024 .  # David Chen ↔ Fatima Al-Hassan
+custom:person008 rel:friendOf custom:person025 .  # David Chen ↔ Kevin Park
+custom:person024 rel:friendOf custom:person025 .  # Fatima ↔ Kevin
+
+# Cross-city tech friends
+custom:person001 rel:friendOf custom:person008 .  # Rajesh (Bangalore) → David (SF) — met at a conference
+custom:person001 rel:friendOf custom:person021 .  # Rajesh → Carlos (Austin) — open source collaborators
+custom:person021 rel:friendOf custom:person029 .  # Carlos → Omar (DC) — DevOps community
+
+# Young adults / university friends
+custom:person007 rel:friendOf custom:person003 .  # Emily Johnson ↔ Ananya Sharma — study abroad friends
+custom:person007 rel:friendOf custom:person017 .  # Emily ↔ Rohan Patel — college friends
+custom:person003 rel:friendOf custom:person017 .  # Ananya ↔ Rohan — met through Emily
+custom:person003 rel:friendOf custom:person038 .  # Ananya ↔ Hannah Scott — CS research network
+custom:person017 rel:friendOf custom:person038 .  # Rohan ↔ Hannah — Boston student circle
+
+# Creative / design friends
+custom:person014 rel:friendOf custom:person036 .  # Emma Williams ↔ Chloe Anderson — design community
+custom:person014 rel:friendOf custom:person044 .  # Emma ↔ Zoe Campbell — creative arts
+custom:person036 rel:friendOf custom:person044 .  # Chloe ↔ Zoe — social media / photography
+
+# New York social circle
+custom:person005 rel:friendOf custom:person039 .  # Michael Johnson ↔ Daniel Cooper — finance world
+custom:person005 rel:friendOf custom:person031 .  # Michael ↔ William Taylor — Upper East Side neighbors
+custom:person006 rel:friendOf custom:person042 .  # Sarah Johnson ↔ Lily Nguyen — lawyer network
+custom:person026 rel:friendOf custom:person048 .  # Amanda Foster ↔ Nadia Petrova — NYC friends
+
+# Healthcare friends
+custom:person002 rel:friendOf custom:person015 .  # Priya Sharma ↔ Amit Patel — medical conference friends
+custom:person002 rel:friendOf custom:person040 .  # Priya ↔ Mia Torres — pediatric cardiology collaboration
+custom:person012 rel:friendOf custom:person016 .  # Maria Williams ↔ Neha Patel — nursing/pharmacy conference
+custom:person016 rel:friendOf custom:person028 .  # Neha Patel ↔ Rachel Green — Boston healthcare community
+
+# Education friends
+custom:person027 rel:friendOf custom:person011 .  # Thomas Brown ↔ James Williams — Chicago educators
+custom:person027 rel:friendOf custom:person046 .  # Thomas ↔ Ava Robinson — teaching community
+
+# Misc friendships
+custom:person029 rel:friendOf custom:person041 .  # Omar ↔ Ethan — tech meetups
+custom:person034 rel:friendOf custom:person044 .  # Olivia ↔ Zoe — Portland neighbors and friends
+custom:person035 rel:friendOf custom:person013 .  # Benjamin Clark ↔ Tyler Williams — engineering peers
+custom:person045 rel:friendOf custom:person049 .  # Ryan Mitchell ↔ Marcus Reed — fitness/health connection
+custom:person030 rel:friendOf custom:person022 .  # Sophia Martinez ↔ Isabella Rodriguez — architecture/design
+
+# Cross-network friendships (051-100 ↔ 001-050)
+custom:person051 rel:friendOf custom:person032 .  # Miguel Garcia ↔ Grace Lee — LA wellness/entertainment
+custom:person051 rel:friendOf custom:person049 .  # Miguel ↔ Marcus Reed — LA neighbors
+custom:person055 rel:friendOf custom:person015 .  # Patrick O'Brien ↔ Amit Patel — Boston healthcare/biotech
+custom:person057 rel:friendOf custom:person017 .  # Liam O'Brien ↔ Rohan Patel — Boston young professionals
+custom:person057 rel:friendOf custom:person089 .  # Liam ↔ Natasha Petrov — Boston biomedical colleagues
+custom:person058 rel:friendOf custom:person018 .  # Hiroshi Tanaka ↔ Robert Kim — Seattle tech
+custom:person058 rel:friendOf custom:person041 .  # Hiroshi ↔ Ethan Brooks — Seattle tech meetups
+custom:person061 rel:friendOf custom:person043 .  # Chinedu Okafor ↔ Samuel Jackson — Atlanta professionals
+custom:person066 rel:friendOf custom:person024 .  # Priyanka Mehta ↔ Fatima Al-Hassan — SF AI/data science
+custom:person066 rel:friendOf custom:person008 .  # Priyanka ↔ David Chen — SF ML community
+custom:person068 rel:friendOf custom:person029 .  # Aisha Mohammed ↔ Omar Hassan — DC professionals
+custom:person068 rel:friendOf custom:person042 .  # Aisha ↔ Lily Nguyen — DC social circle
+custom:person069 rel:friendOf custom:person007 .  # Connor Walsh ↔ Emily Johnson — NYC young professionals
+custom:person070 rel:friendOf custom:person014 .  # Valentina Rossi ↔ Emma Williams — Chicago creative scene
+custom:person071 rel:friendOf custom:person021 .  # Takeshi Yamamoto ↔ Carlos Rodriguez — Austin tech
+custom:person072 rel:friendOf custom:person011 .  # Elena Volkov ↔ James Williams — Chicago physics/education
+custom:person074 rel:friendOf custom:person048 .  # Isabelle Dupont ↔ Nadia Petrova — Chelsea NYC friends
+custom:person076 rel:friendOf custom:person003 .  # Maya Singh ↔ Ananya Sharma — Bangalore tech/student
+custom:person076 rel:friendOf custom:person001 .  # Maya ↔ Rajesh Sharma — Bangalore mentorship
+custom:person078 rel:friendOf custom:person030 .  # Lucia Santos ↔ Sophia Martinez — Miami friends
+custom:person080 rel:friendOf custom:person013 .  # Aaliyah Washington ↔ Tyler Williams — Chicago community
+custom:person083 rel:friendOf custom:person046 .  # Jamal Williams ↔ Ava Robinson — Chicago education
+custom:person084 rel:friendOf custom:person008 .  # Chen Wei ↔ David Chen — SF/Stanford research
+custom:person085 rel:friendOf custom:person068 .  # Amara Diallo ↔ Aisha Mohammed — DC NGO/health
+custom:person086 rel:friendOf custom:person035 .  # Sebastian Muller ↔ Benjamin Clark — Detroit automotive
+custom:person088 rel:friendOf custom:person039 .  # Yusuf Ali ↔ Daniel Cooper — NYC finance/construction
+custom:person091 rel:friendOf custom:person059 .  # Aiko Nakamura ↔ Yuki Tanaka — Seattle Japanese community
+custom:person093 rel:friendOf custom:person025 .  # Mei Lin Chang ↔ Kevin Park — SF tech/law
+custom:person094 rel:friendOf custom:person021 .  # Abdul Rahman ↔ Carlos Rodriguez — Austin community
+custom:person095 rel:friendOf custom:person045 .  # Freya Nielsen ↔ Ryan Mitchell — Denver community
+custom:person096 rel:friendOf custom:person005 .  # Giovanni Bianchi ↔ Michael Johnson — Upper East Side NYC
+custom:person097 rel:friendOf custom:person002 .  # Sunita Rao ↔ Priya Sharma — Bangalore professionals
+custom:person098 rel:friendOf custom:person083 .  # Derek Morrison ↔ Jamal Williams — Chicago Woodlawn community
+custom:person099 rel:friendOf custom:person037 .  # Leila Hadid ↔ Alexander Murphy — Dallas professionals
+custom:person100 rel:friendOf custom:person029 .  # Victor Oduya ↔ Omar Hassan — DC policy/security
+
+# New inter-group friendships (within 051-100)
+custom:person067 rel:friendOf custom:person034 .  # James O'Connor ↔ Olivia Davis — Portland community
+custom:person067 rel:friendOf custom:person044 .  # James O'Connor ↔ Zoe Campbell — Portland NW Glisan
+custom:person075 rel:friendOf custom:person090 .  # Kwame Asante ↔ Kofi Mensah — Atlanta Ghana community
+custom:person079 rel:friendOf custom:person096 .  # Dmitri Volkov ↔ Giovanni Bianchi — NYC performing arts
+custom:person082 rel:friendOf custom:person056 .  # Sophie Dubois ↔ Siobhan O'Brien — Boston academic circle
+custom:person085 rel:friendOf custom:person100 .  # Amara Diallo ↔ Victor Oduya — DC Africa policy
+custom:person087 rel:friendOf custom:person078 .  # Rosa Hernandez ↔ Lucia Santos — Miami legal community
+custom:person092 rel:friendOf custom:person037 .  # Paul Thompson ↔ Alexander Murphy — Dallas/military
+custom:person081 rel:friendOf custom:person040 .  # Ravi Krishnan ↔ Mia Torres — Houston medical
+
+# ── Colleagues (colleagueOf — symmetric) ────────────────────────────────────
+
+# San Francisco tech colleagues
+custom:person008 custom:colleagueOf custom:person024 .  # David Chen ↔ Fatima — both SF tech
+custom:person024 custom:colleagueOf custom:person008 .
+custom:person008 custom:colleagueOf custom:person025 .  # David ↔ Kevin — both SF tech
+custom:person025 custom:colleagueOf custom:person008 .
+
+# Seattle tech colleagues
+custom:person018 custom:colleagueOf custom:person041 .  # Robert Kim ↔ Ethan Brooks — both Seattle tech
+custom:person041 custom:colleagueOf custom:person018 .
+
+# Austin tech/trades colleagues
+custom:person021 custom:colleagueOf custom:person047 .  # Carlos ↔ Jack Turner — work on same projects
+custom:person047 custom:colleagueOf custom:person021 .
+
+# New York finance colleagues
+custom:person005 custom:colleagueOf custom:person039 .  # Michael Johnson ↔ Daniel Cooper — both finance
+custom:person039 custom:colleagueOf custom:person005 .
+custom:person019 custom:colleagueOf custom:person039 .  # Jennifer Kim ↔ Daniel Cooper — finance network
+custom:person039 custom:colleagueOf custom:person019 .
+
+# Healthcare colleagues
+custom:person002 custom:colleagueOf custom:person012 .  # Priya Sharma ↔ Maria Williams — medical professionals
+custom:person012 custom:colleagueOf custom:person002 .
+custom:person015 custom:colleagueOf custom:person040 .  # Amit Patel ↔ Mia Torres — doctors
+custom:person040 custom:colleagueOf custom:person015 .
+
+# Education colleagues
+custom:person011 custom:colleagueOf custom:person046 .  # James Williams ↔ Ava Robinson — Chicago education
+custom:person046 custom:colleagueOf custom:person011 .
+
+# Construction colleagues
+custom:person013 custom:colleagueOf custom:person043 .  # Tyler Williams ↔ Samuel Jackson — construction/engineering
+custom:person043 custom:colleagueOf custom:person013 .
+custom:person022 custom:colleagueOf custom:person043 .  # Isabella Rodriguez ↔ Samuel Jackson — architecture/construction
+custom:person043 custom:colleagueOf custom:person022 .
+
+# Washington DC colleagues
+custom:person029 custom:colleagueOf custom:person042 .  # Omar Hassan ↔ Lily Nguyen — DC professionals
+custom:person042 custom:colleagueOf custom:person029 .
+
+# Los Angeles colleagues
+custom:person032 custom:colleagueOf custom:person049 .  # Grace Lee ↔ Marcus Reed — wellness/health
+custom:person049 custom:colleagueOf custom:person032 .
+
+# ── Neighbors (neighborOf — symmetric) ──────────────────────────────────────
+
+custom:person005 custom:neighborOf custom:person031 .  # Michael Johnson ↔ William Taylor — Upper East Side NYC
+custom:person031 custom:neighborOf custom:person005 .
+
+custom:person024 custom:neighborOf custom:person025 .  # Fatima ↔ Kevin — same block in SF (Folsom St)
+custom:person025 custom:neighborOf custom:person024 .
+
+custom:person026 custom:neighborOf custom:person048 .  # Amanda ↔ Nadia — Chelsea, NYC
+custom:person048 custom:neighborOf custom:person026 .
+
+custom:person033 custom:neighborOf custom:person045 .  # Nathan Wright ↔ Ryan Mitchell — Colfax Ave, Denver
+custom:person045 custom:neighborOf custom:person033 .
+
+custom:person011 custom:neighborOf custom:person027 .  # James Williams ↔ Thomas Brown — Woodlawn, Chicago
+custom:person027 custom:neighborOf custom:person011 .
+
+custom:person011 custom:neighborOf custom:person046 .  # James Williams ↔ Ava Robinson — same area Chicago
+custom:person046 custom:neighborOf custom:person011 .
+
+custom:person034 custom:neighborOf custom:person044 .  # Olivia Davis ↔ Zoe Campbell — NW Glisan St, Portland
+custom:person044 custom:neighborOf custom:person034 .
+
+custom:person021 custom:neighborOf custom:person047 .  # Carlos Rodriguez ↔ Jack Turner — S Lamar, Austin
+custom:person047 custom:neighborOf custom:person021 .
+
+custom:person021 custom:neighborOf custom:person036 .  # Carlos ↔ Chloe Anderson — S Lamar, Austin
+custom:person036 custom:neighborOf custom:person021 .
+
+custom:person041 custom:neighborOf custom:person018 .  # Ethan Brooks ↔ Robert Kim — Westlake Ave, Seattle
+custom:person018 custom:neighborOf custom:person041 .
+
+# ── General Acquaintances (knows) ───────────────────────────────────────────
+
+custom:person037 foaf:knows custom:person018 .  # Alexander Murphy knows Robert Kim — travel connections
+custom:person032 foaf:knows custom:person049 .  # Grace Lee knows Marcus Reed — LA wellness scene
+custom:person043 foaf:knows custom:person022 .  # Samuel Jackson knows Isabella Rodriguez — construction industry
+custom:person030 foaf:knows custom:person032 .  # Sophia Martinez knows Grace Lee — design/wellness overlap
+custom:person037 foaf:knows custom:person021 .  # Alexander Murphy knows Carlos — Texas connections
+custom:person038 foaf:knows custom:person015 .  # Hannah Scott knows Amit Patel — Boston medical/academic overlap
+custom:person050 foaf:knows custom:person027 .  # Eleanor Wright knows Thomas Brown — education/library connection
+custom:person033 foaf:knows custom:person035 .  # Nathan Wright knows Benjamin Clark — real estate client
+
+# ── Ancestor/Descendant (ancestorOf — owl:TransitiveProperty) ───────────────
+# Every parent is an ancestor of their child. Because ancestorOf is transitive,
+# a reasoner would automatically infer: if A ancestorOf B and B ancestorOf C,
+# then A ancestorOf C (multi-generation chains).
+#
+# Example: If we later add Rajesh's parents, they would automatically become
+# ancestors of Ananya and Arjun without needing explicit triples.
+
+# Sharma family — parents are ancestors of children
+custom:person001 custom:ancestorOf custom:person003 .  # Rajesh → Ananya
+custom:person001 custom:ancestorOf custom:person004 .  # Rajesh → Arjun
+custom:person002 custom:ancestorOf custom:person003 .  # Priya → Ananya
+custom:person002 custom:ancestorOf custom:person004 .  # Priya → Arjun
+custom:person003 custom:descendantOf custom:person001 .
+custom:person003 custom:descendantOf custom:person002 .
+custom:person004 custom:descendantOf custom:person001 .
+custom:person004 custom:descendantOf custom:person002 .
+
+# Johnson family
+custom:person005 custom:ancestorOf custom:person007 .  # Michael → Emily
+custom:person006 custom:ancestorOf custom:person007 .  # Sarah → Emily
+custom:person007 custom:descendantOf custom:person005 .
+custom:person007 custom:descendantOf custom:person006 .
+
+# Chen family
+custom:person008 custom:ancestorOf custom:person010 .  # David → Sophie
+custom:person009 custom:ancestorOf custom:person010 .  # Lisa → Sophie
+custom:person010 custom:descendantOf custom:person008 .
+custom:person010 custom:descendantOf custom:person009 .
+
+# Williams family
+custom:person011 custom:ancestorOf custom:person013 .  # James → Tyler
+custom:person011 custom:ancestorOf custom:person014 .  # James → Emma
+custom:person012 custom:ancestorOf custom:person013 .  # Maria → Tyler
+custom:person012 custom:ancestorOf custom:person014 .  # Maria → Emma
+custom:person013 custom:descendantOf custom:person011 .
+custom:person013 custom:descendantOf custom:person012 .
+custom:person014 custom:descendantOf custom:person011 .
+custom:person014 custom:descendantOf custom:person012 .
+
+# Patel family
+custom:person015 custom:ancestorOf custom:person017 .  # Amit → Rohan
+custom:person016 custom:ancestorOf custom:person017 .  # Neha → Rohan
+custom:person017 custom:descendantOf custom:person015 .
+custom:person017 custom:descendantOf custom:person016 .
+
+# Kim family
+custom:person018 custom:ancestorOf custom:person020 .  # Robert → Daniel
+custom:person019 custom:ancestorOf custom:person020 .  # Jennifer → Daniel
+custom:person020 custom:descendantOf custom:person018 .
+custom:person020 custom:descendantOf custom:person019 .
+
+# Rodriguez family
+custom:person021 custom:ancestorOf custom:person023 .  # Carlos → Lucas
+custom:person022 custom:ancestorOf custom:person023 .  # Isabella → Lucas
+custom:person023 custom:descendantOf custom:person021 .
+custom:person023 custom:descendantOf custom:person022 .
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# NEW RELATIONSHIPS FOR PERSONS 051-100
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── New Colleagues (051-100) ────────────────────────────────────────────────
+
+# SF tech expanded
+custom:person066 custom:colleagueOf custom:person024 .  # Priyanka Mehta ↔ Fatima Al-Hassan — SF AI/data
+custom:person024 custom:colleagueOf custom:person066 .
+custom:person066 custom:colleagueOf custom:person084 .  # Priyanka ↔ Chen Wei — AI/quantum research
+custom:person084 custom:colleagueOf custom:person066 .
+custom:person093 custom:colleagueOf custom:person025 .  # Mei Lin Chang ↔ Kevin Park — SF tech/patent
+custom:person025 custom:colleagueOf custom:person093 .
+
+# Seattle tech expanded
+custom:person058 custom:colleagueOf custom:person018 .  # Hiroshi Tanaka ↔ Robert Kim — Seattle tech
+custom:person018 custom:colleagueOf custom:person058 .
+custom:person058 custom:colleagueOf custom:person041 .  # Hiroshi ↔ Ethan Brooks — Seattle tech
+custom:person041 custom:colleagueOf custom:person058 .
+
+# Austin tech expanded
+custom:person071 custom:colleagueOf custom:person021 .  # Takeshi ↔ Carlos — Austin tech
+custom:person021 custom:colleagueOf custom:person071 .
+custom:person094 custom:colleagueOf custom:person071 .  # Abdul Rahman ↔ Takeshi — Austin tech/academia
+custom:person071 custom:colleagueOf custom:person094 .
+
+# Boston healthcare/biotech
+custom:person055 custom:colleagueOf custom:person015 .  # Patrick O'Brien ↔ Amit Patel — biotech/medicine
+custom:person015 custom:colleagueOf custom:person055 .
+custom:person057 custom:colleagueOf custom:person089 .  # Liam O'Brien ↔ Natasha Petrov — biomedical Boston
+custom:person089 custom:colleagueOf custom:person057 .
+
+# Chicago expanded
+custom:person072 custom:colleagueOf custom:person011 .  # Elena Volkov ↔ James Williams — physics
+custom:person011 custom:colleagueOf custom:person072 .
+custom:person083 custom:colleagueOf custom:person046 .  # Jamal ↔ Ava Robinson — Chicago education
+custom:person046 custom:colleagueOf custom:person083 .
+custom:person098 custom:colleagueOf custom:person083 .  # Derek Morrison ↔ Jamal — Chicago community service
+custom:person083 custom:colleagueOf custom:person098 .
+
+# Atlanta expanded
+custom:person075 custom:colleagueOf custom:person061 .  # Kwame Asante ↔ Chinedu Okafor — Atlanta
+custom:person061 custom:colleagueOf custom:person075 .
+custom:person090 custom:colleagueOf custom:person043 .  # Kofi Mensah ↔ Samuel Jackson — Atlanta logistics/construction
+custom:person043 custom:colleagueOf custom:person090 .
+
+# Detroit automotive
+custom:person086 custom:colleagueOf custom:person035 .  # Sebastian Muller ↔ Benjamin Clark — Detroit auto
+custom:person035 custom:colleagueOf custom:person086 .
+
+# Houston medical
+custom:person081 custom:colleagueOf custom:person040 .  # Ravi Krishnan ↔ Mia Torres — Houston doctors
+custom:person040 custom:colleagueOf custom:person081 .
+
+# DC expanded
+custom:person068 custom:colleagueOf custom:person042 .  # Aisha Mohammed ↔ Lily Nguyen — DC professionals
+custom:person042 custom:colleagueOf custom:person068 .
+custom:person085 custom:colleagueOf custom:person100 .  # Amara Diallo ↔ Victor Oduya — DC policy
+custom:person100 custom:colleagueOf custom:person085 .
+
+# Miami legal
+custom:person087 custom:colleagueOf custom:person078 .  # Rosa Hernandez ↔ Lucia Santos — Miami law
+custom:person078 custom:colleagueOf custom:person087 .
+
+# LA entertainment
+custom:person051 custom:colleagueOf custom:person052 .  # Miguel ↔ Carmen Garcia — entertainment industry
+custom:person052 custom:colleagueOf custom:person051 .
+
+# NYC arts
+custom:person079 custom:colleagueOf custom:person096 .  # Dmitri Volkov ↔ Giovanni Bianchi — performing arts
+custom:person096 custom:colleagueOf custom:person079 .
+custom:person088 custom:colleagueOf custom:person013 .  # Yusuf Ali ↔ Tyler Williams — structural engineering
+custom:person013 custom:colleagueOf custom:person088 .
+
+# Bangalore
+custom:person076 custom:colleagueOf custom:person097 .  # Maya Singh ↔ Sunita Rao — Bangalore professionals
+custom:person097 custom:colleagueOf custom:person076 .
+
+# ── New Neighbors (051-100) ─────────────────────────────────────────────────
+
+custom:person051 custom:neighborOf custom:person049 .  # Miguel Garcia ↔ Marcus Reed — Sunset Blvd, LA
+custom:person049 custom:neighborOf custom:person051 .
+
+custom:person055 custom:neighborOf custom:person015 .  # Patrick O'Brien ↔ Amit Patel — Beacon St, Boston
+custom:person015 custom:neighborOf custom:person055 .
+
+custom:person058 custom:neighborOf custom:person018 .  # Hiroshi Tanaka ↔ Robert Kim — Westlake Ave, Seattle
+custom:person018 custom:neighborOf custom:person058 .
+
+custom:person058 custom:neighborOf custom:person091 .  # Hiroshi ↔ Aiko Nakamura — Westlake Ave, Seattle
+custom:person091 custom:neighborOf custom:person058 .
+
+custom:person061 custom:neighborOf custom:person075 .  # Chinedu Okafor ↔ Kwame Asante — Peachtree, Atlanta
+custom:person075 custom:neighborOf custom:person061 .
+
+custom:person061 custom:neighborOf custom:person090 .  # Chinedu ↔ Kofi Mensah — Peachtree, Atlanta
+custom:person090 custom:neighborOf custom:person061 .
+
+custom:person064 custom:neighborOf custom:person033 .  # Lars Eriksson ↔ Nathan Wright — Colfax Ave, Denver
+custom:person033 custom:neighborOf custom:person064 .
+
+custom:person064 custom:neighborOf custom:person095 .  # Lars ↔ Freya Nielsen — Colfax Ave, Denver
+custom:person095 custom:neighborOf custom:person064 .
+
+custom:person066 custom:neighborOf custom:person024 .  # Priyanka ↔ Fatima — Folsom St, SF
+custom:person024 custom:neighborOf custom:person066 .
+
+custom:person067 custom:neighborOf custom:person034 .  # James O'Connor ↔ Olivia Davis — NW Glisan, Portland
+custom:person034 custom:neighborOf custom:person067 .
+
+custom:person070 custom:neighborOf custom:person013 .  # Valentina Rossi ↔ Tyler Williams — Lake Shore, Chicago
+custom:person013 custom:neighborOf custom:person070 .
+
+custom:person071 custom:neighborOf custom:person094 .  # Takeshi ↔ Abdul Rahman — S Lamar, Austin
+custom:person094 custom:neighborOf custom:person071 .
+
+custom:person072 custom:neighborOf custom:person011 .  # Elena Volkov ↔ James Williams — Woodlawn, Chicago
+custom:person011 custom:neighborOf custom:person072 .
+
+custom:person074 custom:neighborOf custom:person026 .  # Isabelle Dupont ↔ Amanda Foster — Chelsea, NYC
+custom:person026 custom:neighborOf custom:person074 .
+
+custom:person078 custom:neighborOf custom:person030 .  # Lucia Santos ↔ Sophia Martinez — Brickell, Miami
+custom:person030 custom:neighborOf custom:person078 .
+
+custom:person083 custom:neighborOf custom:person098 .  # Jamal ↔ Derek Morrison — Woodlawn, Chicago
+custom:person098 custom:neighborOf custom:person083 .
+
+custom:person088 custom:neighborOf custom:person039 .  # Yusuf Ali ↔ Daniel Cooper — Park Ave, NYC
+custom:person039 custom:neighborOf custom:person088 .
+
+custom:person092 custom:neighborOf custom:person037 .  # Paul Thompson ↔ Alexander Murphy — Mockingbird, Dallas
+custom:person037 custom:neighborOf custom:person092 .
+
+custom:person096 custom:neighborOf custom:person005 .  # Giovanni Bianchi ↔ Michael Johnson — Upper East Side
+custom:person005 custom:neighborOf custom:person096 .
+
+custom:person099 custom:neighborOf custom:person092 .  # Leila Hadid ↔ Paul Thompson — Mockingbird, Dallas
+custom:person092 custom:neighborOf custom:person099 .
+
+custom:person089 custom:neighborOf custom:person057 .  # Natasha Petrov ↔ Liam O'Brien — Nashua St, Boston
+custom:person057 custom:neighborOf custom:person089 .
+
+# ── New Acquaintances (051-100) ─────────────────────────────────────────────
+
+custom:person052 foaf:knows custom:person032 .  # Carmen Garcia knows Grace Lee — LA entertainment/wellness
+custom:person062 foaf:knows custom:person030 .  # Adaeze Okafor knows Sophia Martinez — fashion/design
+custom:person065 foaf:knows custom:person045 .  # Ingrid Eriksson knows Ryan Mitchell — Denver wellness
+custom:person073 foaf:knows custom:person031 .  # Marco DeLuca knows William Taylor — hospitality/restaurants
+custom:person077 foaf:knows custom:person058 .  # Henrik Johansson knows Hiroshi Tanaka — Seattle science
+custom:person080 foaf:knows custom:person070 .  # Aaliyah Washington knows Valentina Rossi — Chicago community
+custom:person082 foaf:knows custom:person048 .  # Sophie Dubois knows Nadia Petrova — arts world
+custom:person084 foaf:knows custom:person011 .  # Chen Wei knows James Williams — physics colleagues
+custom:person091 foaf:knows custom:person019 .  # Aiko Nakamura knows Jennifer Kim — Seattle community
+custom:person097 foaf:knows custom:person004 .  # Sunita Rao knows Arjun Sharma — Bangalore school counselor
+
+# ── New Ancestor/Descendant (051-100) ───────────────────────────────────────
+
+# Garcia family
+custom:person051 custom:ancestorOf custom:person053 .  # Miguel → Sofia
+custom:person051 custom:ancestorOf custom:person054 .  # Miguel → Diego
+custom:person052 custom:ancestorOf custom:person053 .  # Carmen → Sofia
+custom:person052 custom:ancestorOf custom:person054 .  # Carmen → Diego
+custom:person053 custom:descendantOf custom:person051 .
+custom:person053 custom:descendantOf custom:person052 .
+custom:person054 custom:descendantOf custom:person051 .
+custom:person054 custom:descendantOf custom:person052 .
+
+# O'Brien family
+custom:person055 custom:ancestorOf custom:person057 .  # Patrick → Liam
+custom:person056 custom:ancestorOf custom:person057 .  # Siobhan → Liam
+custom:person057 custom:descendantOf custom:person055 .
+custom:person057 custom:descendantOf custom:person056 .
+
+# Tanaka family
+custom:person058 custom:ancestorOf custom:person060 .  # Hiroshi → Kenji
+custom:person059 custom:ancestorOf custom:person060 .  # Yuki → Kenji
+custom:person060 custom:descendantOf custom:person058 .
+custom:person060 custom:descendantOf custom:person059 .
+
+# Okafor family
+custom:person061 custom:ancestorOf custom:person063 .  # Chinedu → Chioma
+custom:person062 custom:ancestorOf custom:person063 .  # Adaeze → Chioma
+custom:person063 custom:descendantOf custom:person061 .
+custom:person063 custom:descendantOf custom:person062 .

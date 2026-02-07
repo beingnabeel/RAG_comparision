@@ -1,0 +1,273 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix schema: <http://schema.org/> .
+@prefix custom: <http://example.org/foaf-poc/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# ── OWL Ontology Header ─────────────────────────────────────────────────────
+
+custom:foaf-poc-ontology a owl:Ontology ;
+    rdfs:label "FoaF PoC Ontology" ;
+    rdfs:comment "An OWL ontology for a Friend-of-a-Friend social network proof of concept. Defines persons, their properties, and social/professional/family relationships." ;
+    owl:versionInfo "3.0" .
+
+# ── OWL Classes ──────────────────────────────────────────────────────────────
+
+custom:Person a owl:Class ;
+    rdfs:label "Person" ;
+    rdfs:comment "An individual in the FoaF social network" ;
+    # owl:equivalentClass — our custom:Person is semantically the same as foaf:Person
+    owl:equivalentClass foaf:Person ;
+    # owl:Restriction — every Person must have exactly one full name
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty foaf:name ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    # owl:Restriction — every Person must have exactly one birth date
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty custom:birthDate ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+schema:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    rdfs:comment "An organization that a person may work for" .
+
+# ── Subclasses of Person (rdfs:subClassOf) ──────────────────────────────────
+# These demonstrate class hierarchy: every Student IS-A Person, every Employee IS-A Person, etc.
+
+custom:Student a owl:Class ;
+    rdfs:subClassOf custom:Person ;
+    rdfs:label "Student" ;
+    rdfs:comment "A person currently enrolled in an educational institution. Inherits all properties of Person." .
+
+custom:Employee a owl:Class ;
+    rdfs:subClassOf custom:Person ;
+    rdfs:label "Employee" ;
+    rdfs:comment "A person currently employed by an organization. Inherits all properties of Person." .
+
+custom:Retiree a owl:Class ;
+    rdfs:subClassOf custom:Person ;
+    rdfs:label "Retiree" ;
+    rdfs:comment "A person who has retired from professional work. Inherits all properties of Person." .
+
+# ── Disjoint Classes (owl:disjointWith) ─────────────────────────────────────
+# A Student cannot simultaneously be a Retiree (and vice versa).
+# This is a logical constraint — a reasoner would flag data that violates it.
+
+custom:Student owl:disjointWith custom:Retiree .
+
+# ── Datatype Properties — Personal ───────────────────────────────────────────
+
+foaf:name a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Full Name" ;
+    rdfs:comment "The full name of a person" .
+
+foaf:givenName a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "First Name" ;
+    rdfs:comment "The given (first) name of a person" .
+
+foaf:familyName a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Last Name" ;
+    rdfs:comment "The family (last) name of a person" .
+
+foaf:nick a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Nickname" ;
+    rdfs:comment "A short informal name or alias" .
+
+foaf:age a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Age" ;
+    rdfs:comment "The age of a person in years" .
+
+foaf:gender a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Gender" ;
+    rdfs:comment "The gender of a person (male, female, other)" .
+
+foaf:phone a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Phone Number" ;
+    rdfs:comment "The telephone number of a person" .
+
+custom:birthDate a owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:date ;
+    rdfs:label "Birth Date" ;
+    rdfs:comment "The date of birth. Functional: a person has at most one birth date." .
+
+foaf:mbox a owl:ObjectProperty, owl:InverseFunctionalProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:label "Email Address" ;
+    rdfs:comment "The email address of a person as a mailto: URI. Inverse-functional: no two persons share the same email, so an email uniquely identifies a person." .
+
+# ── Datatype Properties — Location ───────────────────────────────────────────
+
+schema:address a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Full Address" ;
+    rdfs:comment "The complete postal address" .
+
+schema:addressLocality a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "City" ;
+    rdfs:comment "The city or locality" .
+
+schema:addressRegion a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "State/Province" ;
+    rdfs:comment "The state, province, or region" .
+
+schema:postalCode a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Postal Code" ;
+    rdfs:comment "The ZIP or postal code" .
+
+schema:addressCountry a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Country" ;
+    rdfs:comment "The country of residence" .
+
+# ── Datatype Properties — Professional ───────────────────────────────────────
+
+schema:jobTitle a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Job Title" ;
+    rdfs:comment "The job title or position held" .
+
+custom:occupation a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Occupation Description" ;
+    rdfs:comment "A description of the person's occupation" .
+
+custom:industry a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Industry Sector" ;
+    rdfs:comment "The industry in which the person works" .
+
+# ── Object Properties — Professional ─────────────────────────────────────────
+
+schema:worksFor a owl:ObjectProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range schema:Organization ;
+    rdfs:label "Works For" ;
+    rdfs:comment "The organization a person is employed by" .
+
+# ── Object Properties — Relationships ────────────────────────────────────────
+
+foaf:knows a owl:ObjectProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Knows" ;
+    rdfs:comment "Indicates that a person is acquainted with another person" .
+
+rel:friendOf a owl:ObjectProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Friend Of" ;
+    rdfs:comment "Indicates a friendship between two persons" .
+
+rel:spouseOf a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Spouse Of" ;
+    rdfs:comment "Indicates a marriage or spousal relationship (symmetric: if A spouseOf B then B spouseOf A)" .
+
+rel:parentOf a owl:ObjectProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    owl:inverseOf rel:childOf ;
+    rdfs:label "Parent Of" ;
+    rdfs:comment "Indicates a parent-to-child relationship" .
+
+rel:childOf a owl:ObjectProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    owl:inverseOf rel:parentOf ;
+    rdfs:label "Child Of" ;
+    rdfs:comment "Indicates a child-to-parent relationship (inverse of parentOf)" .
+
+rel:siblingOf a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Sibling Of" ;
+    rdfs:comment "Indicates a sibling relationship (symmetric: if A siblingOf B then B siblingOf A)" .
+
+custom:colleagueOf a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Colleague Of" ;
+    rdfs:comment "Indicates a professional colleague relationship (symmetric)" .
+
+custom:neighborOf a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    rdfs:label "Neighbor Of" ;
+    rdfs:comment "Indicates a geographical neighbor relationship (symmetric)" .
+
+# ── Transitive Properties (owl:TransitiveProperty) ──────────────────────────
+# If A ancestorOf B, and B ancestorOf C, then A ancestorOf C.
+# A reasoner would infer: grandparent → parent → child chains automatically.
+
+custom:ancestorOf a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    owl:inverseOf custom:descendantOf ;
+    rdfs:label "Ancestor Of" ;
+    rdfs:comment "Indicates an ancestral relationship. Transitive: if A is ancestor of B, and B is ancestor of C, then A is also ancestor of C. This enables multi-generational queries." .
+
+custom:descendantOf a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range custom:Person ;
+    owl:inverseOf custom:ancestorOf ;
+    rdfs:label "Descendant Of" ;
+    rdfs:comment "Indicates a descendant relationship (inverse of ancestorOf). Also transitive." .
+
+# ── Datatype Properties — Metadata ───────────────────────────────────────────
+
+custom:createdAt a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Created At" ;
+    rdfs:comment "Timestamp when the person record was created" .
+
+custom:updatedAt a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Updated At" ;
+    rdfs:comment "Timestamp when the person record was last updated" .
+
+custom:dataSource a owl:DatatypeProperty ;
+    rdfs:domain custom:Person ;
+    rdfs:range xsd:string ;
+    rdfs:label "Data Source" ;
+    rdfs:comment "The origin or source of the person record" .
+
+custom:closenessScore a owl:DatatypeProperty ;
+    rdfs:range xsd:float ;
+    rdfs:label "Closeness Score" ;
+    rdfs:comment "A score between 0.0 and 1.0 indicating the closeness of a relationship" .

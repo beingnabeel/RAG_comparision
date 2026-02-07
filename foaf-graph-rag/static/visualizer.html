@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoaF Graph Visualizer</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── Top Bar ─────────────────────────────────── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .topbar h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .topbar h1 span {
+            color: #64748b;
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: #1e293b;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #334155;
+            border-color: #64748b;
+        }
+
+        .btn.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: #fff;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border-color: #475569;
+            color: #94a3b8;
+        }
+
+        .btn-reset:hover {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        /* ── Main Layout ─────────────────────────────── */
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── Graph Canvas ────────────────────────────── */
+        #graph-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #graph-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 5;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #334155;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-overlay p {
+            margin-top: 16px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ── Side Panel ──────────────────────────────── */
+        .side-panel {
+            width: 320px;
+            background: #1e293b;
+            border-left: 1px solid #334155;
+            overflow-y: auto;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .panel-section {
+            margin-bottom: 24px;
+        }
+
+        .panel-section h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* ── Legend ───────────────────────────────────── */
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-dot.diamond {
+            border-radius: 2px;
+            transform: rotate(45deg);
+            width: 10px;
+            height: 10px;
+        }
+
+        .legend-dot.triangle {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid;
+            border-radius: 0;
+            background: transparent !important;
+        }
+
+        .legend-line {
+            width: 24px;
+            height: 2px;
+            flex-shrink: 0;
+            border-radius: 1px;
+        }
+
+        /* ── Node Details ────────────────────────────── */
+        .node-details {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .node-details h4 {
+            font-size: 15px;
+            color: #f1f5f9;
+            margin-bottom: 10px;
+        }
+
+        .node-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 12px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .node-detail-row .key {
+            color: #64748b;
+        }
+
+        .node-detail-row .val {
+            color: #cbd5e1;
+            text-align: right;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ── Search ──────────────────────────────────── */
+        .search-box {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            border-color: #6366f1;
+        }
+
+        .search-box::placeholder {
+            color: #475569;
+        }
+
+        /* ── Scrollbar ───────────────────────────────── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <h1>FoaF Graph Visualizer <span>| Interactive Knowledge Graph</span></h1>
+        <div class="controls">
+            <input type="text" class="search-box" id="search" placeholder="Search nodes..." style="width: 200px;">
+            <button class="btn active" id="btn-data" onclick="loadGraph('data')">Data Graph</button>
+            <button class="btn" id="btn-ontology" onclick="loadGraph('ontology')">Ontology Graph</button>
+            <button class="btn btn-reset" onclick="resetView()">Reset View</button>
+            <button class="btn btn-reset" onclick="togglePhysics()">Toggle Physics</button>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main">
+        <!-- Graph Canvas -->
+        <div id="graph-container">
+            <div id="graph-canvas"></div>
+            <div class="loading-overlay" id="loading">
+                <div class="spinner"></div>
+                <p id="loading-text">Loading graph data...</p>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <!-- Stats -->
+            <div class="panel-section">
+                <h3>Graph Statistics</h3>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="value" id="stat-nodes">-</div>
+                        <div class="label">Nodes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value" id="stat-edges">-</div>
+                        <div class="label">Edges</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend (Data) -->
+            <div class="panel-section" id="legend-data">
+                <h3>Legend — Data Graph</h3>
+                <div style="margin-bottom: 10px; font-size: 12px; color: #64748b;">Nodes (by gender)</div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #6366f1;"></div>
+                    <span>Male</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #ec4899;"></div>
+                    <span>Female</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #8b5cf6;"></div>
+                    <span>Other / Unknown</span>
+                </div>
+                <div style="margin: 10px 0 6px; font-size: 12px; color: #64748b;">Edges (relationship)</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #22c55e;"></div>
+                    <span>friendOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #ef4444;"></div>
+                    <span>spouseOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #f59e0b;"></div>
+                    <span>parentOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #f97316;"></div>
+                    <span>childOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #06b6d4;"></div>
+                    <span>siblingOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #8b5cf6;"></div>
+                    <span>colleagueOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #64748b;"></div>
+                    <span>neighborOf</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #94a3b8;"></div>
+                    <span>knows</span>
+                </div>
+            </div>
+
+            <!-- Legend (Ontology) -->
+            <div class="panel-section hidden" id="legend-ontology">
+                <h3>Legend — Ontology Graph</h3>
+                <div class="legend-item">
+                    <div class="legend-dot diamond" style="background: #6366f1;"></div>
+                    <span>Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #22c55e; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+                    <span>Object Property</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #f59e0b; clip-path: polygon(50% 100%, 0% 0%, 100% 0%);"></div>
+                    <span>Datatype Property</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #64748b; border-radius: 2px;"></div>
+                    <span>Literal Value</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #8b5cf6;"></div>
+                    <span>Resource</span>
+                </div>
+            </div>
+
+            <!-- Node Details -->
+            <div class="panel-section">
+                <h3>Node Details</h3>
+                <div id="node-info">
+                    <p style="font-size: 13px; color: #475569;">Click a node to see details</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let network = null;
+        let allNodes = null;
+        let allEdges = null;
+        let physicsEnabled = true;
+        let currentGraph = 'data';
+
+        // ── vis.js Options ────────────────────────────
+        function getOptions() {
+            return {
+                physics: {
+                    enabled: physicsEnabled,
+                    solver: 'forceAtlas2Based',
+                    forceAtlas2Based: {
+                        gravitationalConstant: -80,
+                        centralGravity: 0.01,
+                        springLength: 120,
+                        springConstant: 0.04,
+                        damping: 0.4,
+                    },
+                    stabilization: {
+                        enabled: true,
+                        iterations: 200,
+                        updateInterval: 25,
+                    },
+                },
+                nodes: {
+                    borderWidth: 0,
+                    shadow: { enabled: true, color: 'rgba(0,0,0,0.3)', size: 8 },
+                },
+                edges: {
+                    width: 1.5,
+                    selectionWidth: 2,
+                    hoverWidth: 2,
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 100,
+                    zoomView: true,
+                    dragView: true,
+                    navigationButtons: false,
+                    keyboard: { enabled: true },
+                },
+                layout: {
+                    improvedLayout: true,
+                },
+            };
+        }
+
+        // ── Load Graph ────────────────────────────────
+        async function loadGraph(type) {
+            currentGraph = type;
+
+            // Update button states
+            document.getElementById('btn-data').classList.toggle('active', type === 'data');
+            document.getElementById('btn-ontology').classList.toggle('active', type === 'ontology');
+            document.getElementById('legend-data').classList.toggle('hidden', type !== 'data');
+            document.getElementById('legend-ontology').classList.toggle('hidden', type !== 'ontology');
+
+            // Show loading
+            const loading = document.getElementById('loading');
+            const loadingText = document.getElementById('loading-text');
+            loading.classList.remove('hidden');
+            loadingText.textContent = `Loading ${type} graph...`;
+
+            try {
+                const endpoint = type === 'data' ? '/viz/data-graph' : '/viz/ontology-graph';
+                const resp = await fetch(endpoint);
+                const data = await resp.json();
+
+                if (data.error) {
+                    loadingText.textContent = `Error: ${data.error}`;
+                    return;
+                }
+
+                // Update stats
+                document.getElementById('stat-nodes').textContent = data.stats.node_count;
+                document.getElementById('stat-edges').textContent = data.stats.edge_count;
+
+                // Create vis.js datasets
+                allNodes = new vis.DataSet(data.nodes);
+                allEdges = new vis.DataSet(data.edges);
+
+                // Destroy old network
+                if (network) network.destroy();
+
+                // Create new network
+                const container = document.getElementById('graph-canvas');
+                network = new vis.Network(container, { nodes: allNodes, edges: allEdges }, getOptions());
+
+                // Events
+                network.on('click', onNodeClick);
+                network.on('stabilizationIterationsDone', () => {
+                    loading.classList.add('hidden');
+                });
+
+                // Fallback: hide loading after timeout
+                setTimeout(() => loading.classList.add('hidden'), 8000);
+
+            } catch (err) {
+                loadingText.textContent = `Failed to load: ${err.message}`;
+            }
+        }
+
+        // ── Node Click Handler ────────────────────────
+        function onNodeClick(params) {
+            const infoDiv = document.getElementById('node-info');
+
+            if (params.nodes.length === 0) {
+                infoDiv.innerHTML = '<p style="font-size: 13px; color: #475569;">Click a node to see details</p>';
+                return;
+            }
+
+            const nodeId = params.nodes[0];
+            const node = allNodes.get(nodeId);
+            if (!node) return;
+
+            // Get connected edges
+            const connectedEdges = allEdges.get({
+                filter: e => e.from === nodeId || e.to === nodeId,
+            });
+
+            let html = `<div class="node-details">`;
+            html += `<h4>${node.label}</h4>`;
+            html += `<div class="node-detail-row"><span class="key">ID</span><span class="val">${node.id}</span></div>`;
+
+            if (node.uri) {
+                const shortUri = node.uri.length > 40 ? '...' + node.uri.slice(-37) : node.uri;
+                html += `<div class="node-detail-row"><span class="key">URI</span><span class="val" title="${node.uri}">${shortUri}</span></div>`;
+            }
+
+            if (node.types && node.types.length > 0) {
+                html += `<div class="node-detail-row"><span class="key">Types</span><span class="val">${node.types.join(', ')}</span></div>`;
+            }
+
+            // Show connections
+            if (connectedEdges.length > 0) {
+                html += `<div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #334155;">`;
+                html += `<div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">Connections (${connectedEdges.length})</div>`;
+
+                connectedEdges.slice(0, 15).forEach(edge => {
+                    const otherId = edge.from === nodeId ? edge.to : edge.from;
+                    const otherNode = allNodes.get(otherId);
+                    const direction = edge.from === nodeId ? '→' : '←';
+                    const otherLabel = otherNode ? otherNode.label : otherId;
+
+                    html += `<div class="node-detail-row">
+                        <span class="key">${edge.label || 'connected'}</span>
+                        <span class="val">${direction} ${otherLabel}</span>
+                    </div>`;
+                });
+
+                if (connectedEdges.length > 15) {
+                    html += `<div style="font-size: 11px; color: #475569; margin-top: 4px;">...and ${connectedEdges.length - 15} more</div>`;
+                }
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            infoDiv.innerHTML = html;
+        }
+
+        // ── Search ────────────────────────────────────
+        document.getElementById('search').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+
+            if (!allNodes || !network) return;
+
+            if (!query) {
+                // Reset all nodes
+                allNodes.forEach(node => {
+                    allNodes.update({ id: node.id, opacity: 1, font: { ...node.font, color: '#e2e8f0' } });
+                });
+                return;
+            }
+
+            allNodes.forEach(node => {
+                const match = node.label.toLowerCase().includes(query);
+                allNodes.update({
+                    id: node.id,
+                    opacity: match ? 1 : 0.15,
+                    font: { ...node.font, color: match ? '#e2e8f0' : '#334155' },
+                });
+            });
+
+            // Focus on first match
+            const matchIds = allNodes.get({
+                filter: n => n.label.toLowerCase().includes(query),
+            }).map(n => n.id);
+
+            if (matchIds.length > 0 && matchIds.length <= 10) {
+                network.selectNodes(matchIds);
+                network.focus(matchIds[0], { scale: 1.2, animation: { duration: 500 } });
+            }
+        });
+
+        // ── Utilities ─────────────────────────────────
+        function resetView() {
+            if (network) {
+                network.fit({ animation: { duration: 500 } });
+
+                // Reset opacity
+                if (allNodes) {
+                    allNodes.forEach(node => {
+                        allNodes.update({ id: node.id, opacity: 1, font: { ...node.font, color: '#e2e8f0' } });
+                    });
+                }
+
+                document.getElementById('search').value = '';
+            }
+        }
+
+        function togglePhysics() {
+            physicsEnabled = !physicsEnabled;
+            if (network) {
+                network.setOptions({ physics: { enabled: physicsEnabled } });
+            }
+        }
+
+        // ── Init ──────────────────────────────────────
+        loadGraph('data');
+    </script>
+</body>
+</html>

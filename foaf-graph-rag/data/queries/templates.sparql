@@ -1,0 +1,76 @@
+# Common SPARQL Query Templates for FoaF Graph RAG
+
+# ── 1. Search person by name ────────────────────────────────────────────────
+# PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+# PREFIX custom: <http://example.org/foaf-poc/>
+# SELECT ?person ?name ?age ?phone ?email
+# WHERE {
+#     ?person a custom:Person ; foaf:name ?name .
+#     OPTIONAL { ?person foaf:age ?age }
+#     OPTIONAL { ?person foaf:phone ?phone }
+#     OPTIONAL { ?person foaf:mbox ?email }
+#     FILTER (CONTAINS(LCASE(?name), LCASE("John")))
+# }
+# LIMIT 10
+
+# ── 2. Get all friends of a person ──────────────────────────────────────────
+# PREFIX rel: <http://purl.org/vocab/relationship/>
+# PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+# PREFIX custom: <http://example.org/foaf-poc/>
+# SELECT ?friend ?friendName
+# WHERE {
+#     ?person foaf:name "John Smith" .
+#     ?person rel:friendOf ?friend .
+#     ?friend foaf:name ?friendName .
+# }
+
+# ── 3. Get friends-of-friends (2-hop) ───────────────────────────────────────
+# PREFIX rel: <http://purl.org/vocab/relationship/>
+# PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+# SELECT ?fof ?fofName
+# WHERE {
+#     ?person foaf:name "John Smith" .
+#     ?person rel:friendOf ?friend .
+#     ?friend rel:friendOf ?fof .
+#     ?fof foaf:name ?fofName .
+#     FILTER (?fof != ?person)
+# }
+
+# ── 4. Count persons by industry ────────────────────────────────────────────
+# PREFIX custom: <http://example.org/foaf-poc/>
+# SELECT ?industry (COUNT(?person) AS ?count)
+# WHERE {
+#     ?person a custom:Person ;
+#             custom:industry ?industry .
+# }
+# GROUP BY ?industry
+# ORDER BY DESC(?count)
+
+# ── 5. Find spouse and their friends ────────────────────────────────────────
+# PREFIX rel: <http://purl.org/vocab/relationship/>
+# PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+# SELECT ?spouse ?spouseName ?friend ?friendName
+# WHERE {
+#     ?person foaf:name "John Smith" .
+#     ?person rel:spouseOf ?spouse .
+#     ?spouse foaf:name ?spouseName .
+#     OPTIONAL {
+#         ?spouse rel:friendOf ?friend .
+#         ?friend foaf:name ?friendName .
+#     }
+# }
+
+# ── 6. Find persons in a city ───────────────────────────────────────────────
+# PREFIX schema: <http://schema.org/>
+# PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+# PREFIX custom: <http://example.org/foaf-poc/>
+# SELECT ?person ?name ?jobTitle
+# WHERE {
+#     ?person a custom:Person ;
+#             foaf:name ?name ;
+#             schema:addressLocality "Springfield" .
+#     OPTIONAL { ?person schema:jobTitle ?jobTitle }
+# }
+
+# ── 7. Count all triples ────────────────────────────────────────────────────
+# SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }
