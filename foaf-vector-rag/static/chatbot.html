@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoaF Vector RAG — Chatbot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        brand: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 800:'#166534', 900:'#14532d' },
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .msg-markdown p { margin-bottom: 0.5rem; }
+    .msg-markdown ul, .msg-markdown ol { margin-left: 1.25rem; margin-bottom: 0.5rem; }
+    .msg-markdown li { margin-bottom: 0.15rem; }
+    .msg-markdown strong { font-weight: 600; }
+    .msg-markdown code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
+    .msg-markdown pre { background: #1e293b; color: #e2e8f0; padding: 0.75rem; border-radius: 8px; overflow-x: auto; margin: 0.5rem 0; font-size: 0.82em; }
+    .msg-markdown pre code { background: transparent; color: inherit; padding: 0; }
+    .log-card { transition: all 0.2s ease; }
+    .log-card:hover { transform: translateX(2px); }
+    .scroll-fade { mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    @keyframes pulse-dot { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    .typing-dot { animation: pulse-dot 1.4s infinite ease-in-out both; }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes slide-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-slide-in { animation: slide-in 0.25s ease-out; }
+  </style>
+</head>
+<body class="bg-slate-50 h-screen overflow-hidden">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useRef, useEffect, useCallback } = React;
+
+    const Icon = ({ d, size = 20, className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+           className={className}><path d={d} /></svg>
+    );
+    const SendIcon = (p) => <Icon {...p} d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />;
+    const PlusIcon = (p) => <Icon {...p} d="M12 5v14M5 12h14" />;
+    const TrashIcon = (p) => <Icon {...p} d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />;
+    const BotIcon = (p) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={p.size||20} height={p.size||20} viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+           className={p.className||""}>
+        <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/>
+      </svg>
+    );
+    const ChevronIcon = ({ open }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+           className={`transition-transform duration-200 ${open ? 'rotate-90' : ''}`}>
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    );
+
+    const TypingIndicator = () => (
+      <div className="flex items-center gap-3 animate-slide-in">
+        <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0">
+          <BotIcon size={16} className="text-white" />
+        </div>
+        <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+          <div className="flex gap-1.5">
+            <div className="typing-dot w-2 h-2 bg-slate-400 rounded-full"></div>
+            <div className="typing-dot w-2 h-2 bg-slate-400 rounded-full"></div>
+            <div className="typing-dot w-2 h-2 bg-slate-400 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    );
+
+    const ChatMessage = ({ msg }) => {
+      const isUser = msg.role === "user";
+      const html = msg.role === "bot" ? marked.parse(msg.text || "") : "";
+      return (
+        <div className={`flex gap-3 animate-slide-in ${isUser ? 'justify-end' : 'justify-start'}`}>
+          {!isUser && (
+            <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+              <BotIcon size={16} className="text-white" />
+            </div>
+          )}
+          <div className={`max-w-[75%] ${isUser
+            ? 'bg-brand-600 text-white rounded-2xl rounded-tr-sm px-4 py-2.5'
+            : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm'}`}>
+            {isUser
+              ? <p className="text-sm leading-relaxed">{msg.text}</p>
+              : <div className="msg-markdown text-sm text-slate-700 leading-relaxed"
+                     dangerouslySetInnerHTML={{ __html: html }} />
+            }
+            {msg.meta && (
+              <div className={`mt-2 pt-2 border-t text-xs flex flex-wrap gap-3 ${isUser ? 'border-green-400/40 text-green-100' : 'border-slate-100 text-slate-400'}`}>
+                {msg.meta.intent && <span>Intent: <strong>{msg.meta.intent}</strong></span>}
+                {msg.meta.retrieval_count != null && <span>Docs: <strong>{msg.meta.retrieval_count}</strong></span>}
+                {msg.meta.execution_time_ms && <span>Time: <strong>{(msg.meta.execution_time_ms/1000).toFixed(1)}s</strong></span>}
+              </div>
+            )}
+          </div>
+          {isUser && (
+            <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0 mt-1">
+              <span className="text-white text-xs font-bold">U</span>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const LOG_STYLES = {
+      intent:    { bg: 'bg-violet-50',  border: 'border-violet-200', badge: 'bg-violet-100 text-violet-700', icon: '🎯' },
+      retrieval: { bg: 'bg-amber-50',   border: 'border-amber-200',  badge: 'bg-amber-100 text-amber-700',   icon: '🔍' },
+      llm_call:  { bg: 'bg-purple-50',  border: 'border-purple-200', badge: 'bg-purple-100 text-purple-700', icon: '🤖' },
+      response:  { bg: 'bg-green-50',   border: 'border-green-200',  badge: 'bg-green-100 text-green-700',   icon: '✅' },
+      error:     { bg: 'bg-red-50',     border: 'border-red-200',    badge: 'bg-red-100 text-red-700',       icon: '❌' },
+      warning:   { bg: 'bg-yellow-50',  border: 'border-yellow-200', badge: 'bg-yellow-100 text-yellow-700', icon: '⚠️' },
+      info:      { bg: 'bg-slate-50',   border: 'border-slate-200',  badge: 'bg-slate-100 text-slate-600',   icon: 'ℹ️' },
+    };
+
+    const LogCard = ({ entry }) => {
+      const [expanded, setExpanded] = useState(false);
+      const style = LOG_STYLES[entry.type] || LOG_STYLES.info;
+      const time = new Date(entry.timestamp).toLocaleTimeString('en-US', { hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      const hasDetails = entry.details && Object.keys(entry.details).length > 0;
+
+      return (
+        <div className={`log-card ${style.bg} border ${style.border} rounded-lg p-3 animate-slide-in`}>
+          <div className="flex items-start gap-2">
+            <span className="text-base leading-none mt-0.5">{style.icon}</span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${style.badge}`}>
+                  {entry.type.replace('_', ' ')}
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono">{time}</span>
+              </div>
+              <p className="text-xs font-medium text-slate-700 mt-1">{entry.title}</p>
+              <p className="text-xs text-slate-500 mt-0.5 break-words">{entry.message}</p>
+
+              {hasDetails && (
+                <div className="mt-1.5">
+                  <button onClick={() => setExpanded(!expanded)}
+                    className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-700 transition-colors">
+                    <ChevronIcon open={expanded} />
+                    {expanded ? 'Hide' : 'Show'} Details
+                  </button>
+                  {expanded && (
+                    <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5">
+                      {Object.entries(entry.details).map(([k, v]) => (
+                        <span key={k} className="text-[10px] text-slate-400">
+                          {k}: <span className="text-slate-600 font-medium">{String(v).substring(0, 120)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const ChatPanel = ({ messages, onSend, onNewChat, loading }) => {
+      const [input, setInput] = useState("");
+      const scrollRef = useRef(null);
+      const inputRef = useRef(null);
+
+      useEffect(() => {
+        if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }, [messages, loading]);
+
+      const handleSend = () => {
+        const text = input.trim();
+        if (!text || loading) return;
+        onSend(text);
+        setInput("");
+      };
+      const handleKey = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
+      };
+
+      return (
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-slate-200 bg-white">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center shadow-sm">
+                <BotIcon size={18} className="text-white" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-slate-800">FoaF Vector RAG</h2>
+                <p className="text-[11px] text-slate-400">Semantic Search Chatbot</p>
+              </div>
+            </div>
+            <button onClick={onNewChat}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+              <PlusIcon size={14} /> New Chat
+            </button>
+          </div>
+
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4 scroll-fade">
+            {messages.length === 0 && !loading && (
+              <div className="flex flex-col items-center justify-center h-full text-center opacity-60">
+                <BotIcon size={48} className="text-slate-300 mb-4" />
+                <h3 className="text-lg font-semibold text-slate-400">Ask me anything</h3>
+                <p className="text-sm text-slate-400 mt-1 max-w-sm">
+                  Query the FoaF network using natural language. Powered by semantic vector search + LLM.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2 justify-center max-w-md">
+                  {["Who is Rajesh Sharma?", "List all students", "Who are the friends of David Chen?", "How many people live in Chicago?"].map(q => (
+                    <button key={q} onClick={() => { setInput(q); inputRef.current?.focus(); }}
+                      className="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-full text-slate-500 hover:bg-brand-50 hover:border-brand-300 hover:text-brand-600 transition-colors">
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {messages.map((m, i) => <ChatMessage key={i} msg={m} />)}
+            {loading && <TypingIndicator />}
+          </div>
+
+          <div className="p-4 border-t border-slate-200 bg-white">
+            <div className="flex gap-2 items-end">
+              <textarea ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKey}
+                placeholder="Type your question..."
+                rows={1}
+                className="flex-1 resize-none rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow"
+                style={{ minHeight: '42px', maxHeight: '120px' }}
+                onInput={e => { e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px'; }}
+              />
+              <button onClick={handleSend} disabled={!input.trim() || loading}
+                className="w-10 h-10 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:bg-slate-300 flex items-center justify-center transition-colors shadow-sm">
+                <SendIcon size={16} className="text-white" />
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const LogsPanel = ({ logs, onClear }) => {
+      const scrollRef = useRef(null);
+      const [autoScroll, setAutoScroll] = useState(true);
+
+      useEffect(() => {
+        if (autoScroll && scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }, [logs, autoScroll]);
+
+      const handleScroll = () => {
+        if (!scrollRef.current) return;
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        setAutoScroll(scrollHeight - scrollTop - clientHeight < 60);
+      };
+
+      const counts = {};
+      logs.forEach(l => { counts[l.status] = (counts[l.status] || 0) + 1; });
+
+      return (
+        <div className="flex flex-col h-full bg-slate-50">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-slate-200 bg-white">
+            <div>
+              <h2 className="text-sm font-bold text-slate-800">System Logs</h2>
+              <div className="flex items-center gap-3 mt-0.5">
+                <span className="text-[10px] text-slate-400">{logs.length} entries</span>
+                {counts.success && <span className="text-[10px] text-green-600">● {counts.success} success</span>}
+                {counts.error && <span className="text-[10px] text-red-500">● {counts.error} error</span>}
+                {counts.warning && <span className="text-[10px] text-yellow-600">● {counts.warning} warning</span>}
+              </div>
+            </div>
+            <button onClick={onClear}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+              <TrashIcon size={14} /> Clear
+            </button>
+          </div>
+          <div ref={scrollRef} onScroll={handleScroll} className="flex-1 overflow-y-auto p-3 space-y-2 scroll-fade">
+            {logs.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-full opacity-50">
+                <p className="text-sm text-slate-400">No logs yet</p>
+                <p className="text-xs text-slate-400 mt-1">Logs will appear here as you chat</p>
+              </div>
+            )}
+            {logs.map((entry) => <LogCard key={entry.id} entry={entry} />)}
+          </div>
+          {!autoScroll && logs.length > 0 && (
+            <button onClick={() => { setAutoScroll(true); scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }); }}
+              className="absolute bottom-20 right-8 bg-brand-600 text-white text-xs px-3 py-1.5 rounded-full shadow-lg hover:bg-brand-700 transition-colors">
+              ↓ Latest
+            </button>
+          )}
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [messages, setMessages] = useState([]);
+      const [logs, setLogs] = useState([]);
+      const [loading, setLoading] = useState(false);
+      const [connected, setConnected] = useState(false);
+
+      useEffect(() => {
+        let ws; let timer;
+        const connect = () => {
+          const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+          ws = new WebSocket(`${proto}//${location.host}/ws/logs`);
+          ws.onopen = () => setConnected(true);
+          ws.onclose = () => { setConnected(false); timer = setTimeout(connect, 2000); };
+          ws.onerror = () => ws.close();
+          ws.onmessage = (ev) => {
+            try {
+              const d = JSON.parse(ev.data);
+              if (d.type === 'log' && d.data) setLogs(p => [...p, d.data]);
+              else if (d.type === 'clear') setLogs([]);
+            } catch(e) {}
+          };
+        };
+        connect();
+        return () => { clearTimeout(timer); ws?.close(); };
+      }, []);
+
+      const handleSend = useCallback(async (text) => {
+        setMessages(p => [...p, { role: "user", text }]);
+        setLoading(true);
+        try {
+          const res = await fetch("/api/chat", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text }),
+          });
+          const data = await res.json();
+          setMessages(p => [...p, {
+            role: "bot", text: data.response || "No response received.",
+            meta: { intent: data.intent, retrieval_count: data.retrieval_count, execution_time_ms: data.execution_time_ms }
+          }]);
+        } catch (err) {
+          setMessages(p => [...p, { role: "bot", text: `**Error:** ${err.message}` }]);
+        } finally { setLoading(false); }
+      }, []);
+
+      const handleNewChat = useCallback(() => setMessages([]), []);
+      const handleClearLogs = useCallback(async () => {
+        try { await fetch("/api/logs", { method: "DELETE" }); } catch(e) {}
+        setLogs([]);
+      }, []);
+
+      return (
+        <div className="h-screen flex flex-col">
+          <div className="bg-emerald-900 text-white px-6 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-base font-bold tracking-tight">FoaF Vector RAG</span>
+              <span className="text-xs text-emerald-300 hidden sm:inline">Semantic Search Chatbot</span>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <div className="flex items-center gap-1.5">
+                <div className={`w-2 h-2 rounded-full ${connected ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                <span className="text-emerald-300">{connected ? 'Connected' : 'Disconnected'}</span>
+              </div>
+              <a href="/docs" className="text-emerald-300 hover:text-white transition-colors">API Docs</a>
+            </div>
+          </div>
+          <div className="flex-1 flex overflow-hidden">
+            <div className="w-3/5 border-r border-slate-200 flex flex-col">
+              <ChatPanel messages={messages} onSend={handleSend} onNewChat={handleNewChat} loading={loading} />
+            </div>
+            <div className="w-2/5 relative flex flex-col">
+              <LogsPanel logs={logs} onClear={handleClearLogs} />
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

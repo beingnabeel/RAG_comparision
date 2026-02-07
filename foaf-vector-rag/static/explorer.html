@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoaF Vector RAG — Explorer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        brand: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 800:'#166534', 900:'#14532d' },
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .anim-fade { animation: fade-in 0.2s ease-out; }
+    .dot-tooltip { pointer-events: none; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    /* ── Helpers ──────────────────────────────────────────── */
+    const api = async (path) => {
+      const r = await fetch(path);
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      return r.json();
+    };
+
+    /* ── Stat Card ───────────────────────────────────────── */
+    const StatCard = ({ label, value, sub, color = "brand" }) => (
+      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+        <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">{label}</p>
+        <p className={`text-2xl font-bold mt-1 text-${color}-600`}>{value}</p>
+        {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
+      </div>
+    );
+
+    /* ── Tab Button ──────────────────────────────────────── */
+    const TabBtn = ({ active, onClick, icon, label }) => (
+      <button onClick={onClick}
+        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all
+          ${active ? 'bg-brand-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}>
+        <span>{icon}</span> {label}
+      </button>
+    );
+
+    /* ── Chunk Card ──────────────────────────────────────── */
+    const ChunkCard = ({ chunk, idx, highlight }) => {
+      const [expanded, setExpanded] = useState(false);
+      const text = chunk.document || "";
+      const preview = text.length > 200 ? text.substring(0, 200) + "..." : text;
+
+      return (
+        <div className={`anim-fade bg-white rounded-xl border shadow-sm overflow-hidden transition-all
+          ${highlight ? 'border-brand-400 ring-2 ring-brand-200' : 'border-slate-200'}`}>
+          <div className="px-4 py-3 flex items-center justify-between bg-slate-50 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">
+                #{chunk.chunk_index}
+              </span>
+              <div>
+                <p className="text-xs font-semibold text-slate-700">{chunk.source_file}</p>
+                <p className="text-[10px] text-slate-400">
+                  Chunk {chunk.chunk_index}/{chunk.total_chunks - 1} &middot; {chunk.char_count} chars
+                  &middot; chars {chunk.start_char}–{chunk.end_char}
+                </p>
+              </div>
+            </div>
+            {chunk.similarity != null && (
+              <span className={`text-xs font-bold px-2 py-1 rounded-full
+                ${chunk.similarity > 0.5 ? 'bg-green-100 text-green-700' : chunk.similarity > 0.3 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
+                {(chunk.similarity * 100).toFixed(1)}% match
+              </span>
+            )}
+          </div>
+          <div className="px-4 py-3">
+            <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+              {expanded ? text : preview}
+            </p>
+            {text.length > 200 && (
+              <button onClick={() => setExpanded(!expanded)}
+                className="mt-2 text-xs text-brand-600 hover:text-brand-700 font-medium">
+                {expanded ? '▲ Show less' : '▼ Show full text'}
+              </button>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    /* ── Tab: Chunk Browser ──────────────────────────────── */
+    const ChunkBrowser = () => {
+      const [chunks, setChunks] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [filter, setFilter] = useState("");
+
+      useEffect(() => {
+        api("/chunks/all").then(d => { setChunks(d.chunks || []); setLoading(false); }).catch(() => setLoading(false));
+      }, []);
+
+      const filtered = filter
+        ? chunks.filter(c => c.document.toLowerCase().includes(filter.toLowerCase()) || c.source_file.toLowerCase().includes(filter.toLowerCase()))
+        : chunks;
+
+      if (loading) return <div className="text-center py-12 text-slate-400">Loading chunks...</div>;
+
+      return (
+        <div>
+          <div className="flex items-center gap-4 mb-4">
+            <input value={filter} onChange={e => setFilter(e.target.value)}
+              placeholder="Filter chunks by text or filename..."
+              className="flex-1 px-4 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            <span className="text-xs text-slate-400 whitespace-nowrap">{filtered.length} of {chunks.length} chunks</span>
+          </div>
+          <div className="space-y-3">
+            {filtered.map((c, i) => <ChunkCard key={c.id} chunk={c} idx={i} />)}
+          </div>
+        </div>
+      );
+    };
+
+    /* ── Tab: Semantic Search ─────────────────────────────── */
+    const SemanticSearch = () => {
+      const [query, setQuery] = useState("");
+      const [topK, setTopK] = useState(10);
+      const [results, setResults] = useState(null);
+      const [loading, setLoading] = useState(false);
+
+      const doSearch = async () => {
+        if (!query.trim()) return;
+        setLoading(true);
+        try {
+          const d = await api(`/search/detailed?query=${encodeURIComponent(query)}&top_k=${topK}`);
+          setResults(d);
+        } catch (e) {
+          setResults({ success: false, error: e.message });
+        }
+        setLoading(false);
+      };
+
+      const handleKey = (e) => { if (e.key === "Enter") doSearch(); };
+
+      return (
+        <div>
+          <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm mb-4">
+            <p className="text-xs font-medium text-slate-500 mb-2">Enter a query to find the most semantically similar document chunks</p>
+            <div className="flex gap-2">
+              <input value={query} onChange={e => setQuery(e.target.value)} onKeyDown={handleKey}
+                placeholder="e.g. Who is Rajesh Sharma?"
+                className="flex-1 px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+              <select value={topK} onChange={e => setTopK(+e.target.value)}
+                className="px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white">
+                <option value={5}>Top 5</option>
+                <option value={10}>Top 10</option>
+                <option value={20}>Top 20</option>
+                <option value={46}>All</option>
+              </select>
+              <button onClick={doSearch} disabled={loading || !query.trim()}
+                className="px-5 py-2.5 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:bg-slate-300 transition-colors">
+                {loading ? '...' : 'Search'}
+              </button>
+            </div>
+          </div>
+
+          {results && results.success && (
+            <div>
+              <p className="text-sm text-slate-500 mb-3">
+                Found <strong>{results.count}</strong> results for "<strong>{results.query}</strong>"
+              </p>
+              <div className="space-y-3">
+                {results.results.map((r, i) => (
+                  <ChunkCard key={i} chunk={{
+                    ...r,
+                    id: `result-${i}`,
+                    chunk_index: r.chunk_index,
+                    total_chunks: 0,
+                    start_char: 0, end_char: 0,
+                    similarity: r.similarity,
+                  }} idx={i} highlight={i === 0} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {results && !results.success && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+              Error: {results.error}
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    /* ── Tab: Embedding Map (2D Scatter) ──────────────────── */
+    const EmbeddingMap = () => {
+      const [data, setData] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [hovered, setHovered] = useState(null);
+      const [selected, setSelected] = useState(null);
+      const canvasRef = useRef(null);
+
+      useEffect(() => {
+        api("/embeddings/2d").then(d => { setData(d); setLoading(false); }).catch(() => setLoading(false));
+      }, []);
+
+      const W = 700, H = 500, PAD = 40;
+
+      const scalePoints = useCallback((points) => {
+        if (!points || points.length === 0) return [];
+        const xs = points.map(p => p.x), ys = points.map(p => p.y);
+        const xMin = Math.min(...xs), xMax = Math.max(...xs);
+        const yMin = Math.min(...ys), yMax = Math.max(...ys);
+        const xRange = xMax - xMin || 1, yRange = yMax - yMin || 1;
+        return points.map(p => ({
+          ...p,
+          sx: PAD + ((p.x - xMin) / xRange) * (W - 2 * PAD),
+          sy: PAD + ((p.y - yMin) / yRange) * (H - 2 * PAD),
+        }));
+      }, []);
+
+      if (loading) return <div className="text-center py-12 text-slate-400">Computing 2D projection...</div>;
+      if (!data || !data.success) return <div className="text-center py-12 text-red-400">Failed to load embeddings</div>;
+
+      const scaled = scalePoints(data.points);
+      const variance = data.explained_variance || [];
+
+      return (
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-700">2D Embedding Space (PCA)</h3>
+                  <p className="text-[10px] text-slate-400">
+                    {data.count} chunks &middot; {data.embedding_dim}D → 2D &middot;
+                    Variance explained: PC1={((variance[0]||0)*100).toFixed(1)}%, PC2={((variance[1]||0)*100).toFixed(1)}%
+                  </p>
+                </div>
+              </div>
+              <div className="relative" style={{ width: W, height: H }}>
+                <svg width={W} height={H} className="bg-slate-50">
+                  {/* Grid lines */}
+                  {[0.25,0.5,0.75].map(f => (
+                    <g key={f}>
+                      <line x1={PAD + f*(W-2*PAD)} y1={PAD} x2={PAD + f*(W-2*PAD)} y2={H-PAD} stroke="#e2e8f0" strokeDasharray="4"/>
+                      <line y1={PAD + f*(H-2*PAD)} x1={PAD} y2={PAD + f*(H-2*PAD)} x2={W-PAD} stroke="#e2e8f0" strokeDasharray="4"/>
+                    </g>
+                  ))}
+                  {/* Axes labels */}
+                  <text x={W/2} y={H-8} textAnchor="middle" className="text-[10px] fill-slate-400">PC1</text>
+                  <text x={12} y={H/2} textAnchor="middle" transform={`rotate(-90,12,${H/2})`} className="text-[10px] fill-slate-400">PC2</text>
+                  {/* Points */}
+                  {scaled.map((p, i) => {
+                    const isHovered = hovered === i;
+                    const isSelected = selected === i;
+                    const r = isHovered || isSelected ? 8 : 5;
+                    return (
+                      <g key={i}>
+                        <circle cx={p.sx} cy={p.sy} r={r}
+                          fill={isSelected ? '#16a34a' : isHovered ? '#22c55e' : '#60a5fa'}
+                          stroke={isSelected ? '#14532d' : isHovered ? '#166534' : '#3b82f6'}
+                          strokeWidth={isSelected || isHovered ? 2 : 1}
+                          opacity={isSelected ? 1 : isHovered ? 0.95 : 0.7}
+                          className="cursor-pointer transition-all duration-150"
+                          onMouseEnter={() => setHovered(i)}
+                          onMouseLeave={() => setHovered(null)}
+                          onClick={() => setSelected(i === selected ? null : i)}
+                        />
+                        {isHovered && !isSelected && (
+                          <g className="dot-tooltip">
+                            <rect x={p.sx + 12} y={p.sy - 28} width={180} height={36} rx={6} fill="#1e293b" opacity={0.92}/>
+                            <text x={p.sx + 20} y={p.sy - 14} className="text-[10px] fill-white font-medium">
+                              Chunk #{p.chunk_index} ({p.char_count} chars)
+                            </text>
+                            <text x={p.sx + 20} y={p.sy - 2} className="text-[9px] fill-slate-300">
+                              {p.preview.substring(0, 30)}...
+                            </text>
+                          </g>
+                        )}
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-80 flex-shrink-0">
+            {selected != null && scaled[selected] ? (
+              <div className="anim-fade bg-white rounded-xl border border-brand-200 shadow-sm p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-brand-700 bg-brand-100 px-2 py-1 rounded-lg">
+                    Chunk #{scaled[selected].chunk_index}
+                  </span>
+                  <button onClick={() => setSelected(null)} className="text-xs text-slate-400 hover:text-slate-600">&times; Close</button>
+                </div>
+                <p className="text-[10px] text-slate-400 mb-1">
+                  {scaled[selected].source_file} &middot; {scaled[selected].char_count} chars
+                </p>
+                <p className="text-[10px] text-slate-400 mb-3">
+                  PCA: ({scaled[selected].x}, {scaled[selected].y})
+                </p>
+                <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto">
+                  {data.points[selected]?.preview || ""}
+                </p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 text-center">
+                <p className="text-xs text-slate-400">Click a point to see chunk details</p>
+                <p className="text-[10px] text-slate-300 mt-1">Hover to preview</p>
+              </div>
+            )}
+
+            <div className="mt-4 bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+              <h4 className="text-xs font-bold text-slate-700 mb-2">Legend</h4>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-blue-400 border border-blue-500"></span>
+                  <span className="text-[11px] text-slate-500">Document chunk</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-brand-600 border-2 border-brand-900"></span>
+                  <span className="text-[11px] text-slate-500">Selected chunk</span>
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-400 mt-3">
+                Nearby points = semantically similar text. Points far apart = different topics.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    /* ── Main App ─────────────────────────────────────────── */
+    const App = () => {
+      const [tab, setTab] = useState("browser");
+      const [stats, setStats] = useState(null);
+
+      useEffect(() => {
+        api("/stats").then(d => setStats(d.stats)).catch(() => {});
+      }, []);
+
+      return (
+        <div className="min-h-screen">
+          {/* Header */}
+          <div className="bg-emerald-900 text-white px-6 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-base font-bold tracking-tight">FoaF Vector RAG</span>
+              <span className="text-xs text-emerald-300">Vector Store Explorer</span>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <a href="/chat" className="text-emerald-300 hover:text-white transition-colors">Chat UI</a>
+              <a href="/docs" className="text-emerald-300 hover:text-white transition-colors">API Docs</a>
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto px-6 py-6">
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <StatCard label="Total Chunks" value={stats?.total_chunks ?? '—'} sub="in ChromaDB" />
+              <StatCard label="Documents" value={stats?.documents ?? '—'} sub="collection" />
+              <StatCard label="Embedding Model" value="MiniLM-L6" sub="all-MiniLM-L6-v2 (384d)" color="blue" />
+              <StatCard label="Vector DB" value="ChromaDB" sub="local persistent" color="purple" />
+            </div>
+
+            {/* Tab bar */}
+            <div className="flex gap-2 mb-6 bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm">
+              <TabBtn active={tab==="browser"} onClick={() => setTab("browser")} icon="📄" label="Chunk Browser" />
+              <TabBtn active={tab==="search"}  onClick={() => setTab("search")}  icon="🔍" label="Semantic Search" />
+              <TabBtn active={tab==="map"}     onClick={() => setTab("map")}     icon="🗺️" label="Embedding Map" />
+            </div>
+
+            {/* Tab content */}
+            {tab === "browser" && <ChunkBrowser />}
+            {tab === "search" && <SemanticSearch />}
+            {tab === "map" && <EmbeddingMap />}
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
