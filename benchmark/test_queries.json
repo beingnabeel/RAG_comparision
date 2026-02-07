@@ -1,0 +1,217 @@
+{
+  "metadata": {
+    "description": "Ground-truth test queries for Graph RAG vs Vector RAG comparison",
+    "data_source": "FoaF Social Network (100 persons, 13 families)",
+    "version": "1.0",
+    "categories": {
+      "factual_lookup": "Direct attribute retrieval (name, age, job, city)",
+      "relationship": "Queries about specific relationships (spouse, parent, friend)",
+      "aggregation": "Counting, listing, grouping queries",
+      "multi_hop": "Queries requiring traversal across 2+ relationships",
+      "comparison": "Comparing attributes of multiple persons",
+      "inference": "Requires reasoning beyond explicit data"
+    }
+  },
+  "queries": [
+    {
+      "id": "Q01",
+      "category": "factual_lookup",
+      "difficulty": "easy",
+      "query": "What is Rajesh Sharma's job title and which city does he live in?",
+      "expected_facts": ["Senior Software Architect", "Bangalore"],
+      "expected_answer": "Rajesh Sharma is a Senior Software Architect living in Bangalore, India."
+    },
+    {
+      "id": "Q02",
+      "category": "factual_lookup",
+      "difficulty": "easy",
+      "query": "What is David Chen's email address and occupation?",
+      "expected_facts": ["david.chen@google.com", "Large Language Model Training and Deployment"],
+      "expected_answer": "David Chen's email is david.chen@google.com. His occupation is Large Language Model Training and Deployment."
+    },
+    {
+      "id": "Q03",
+      "category": "factual_lookup",
+      "difficulty": "easy",
+      "query": "How old is Michael Johnson and what industry does he work in?",
+      "expected_facts": ["50", "Finance"],
+      "expected_answer": "Michael Johnson is 50 years old and works in the Finance industry."
+    },
+    {
+      "id": "Q04",
+      "category": "relationship",
+      "difficulty": "easy",
+      "query": "Who is Rajesh Sharma married to?",
+      "expected_facts": ["Priya Sharma"],
+      "expected_answer": "Rajesh Sharma is married to Priya Sharma."
+    },
+    {
+      "id": "Q05",
+      "category": "relationship",
+      "difficulty": "easy",
+      "query": "Who are the children of Rajesh and Priya Sharma?",
+      "expected_facts": ["Ananya Sharma", "Arjun Sharma"],
+      "expected_answer": "Rajesh and Priya Sharma have two children: Ananya Sharma and Arjun Sharma."
+    },
+    {
+      "id": "Q06",
+      "category": "relationship",
+      "difficulty": "medium",
+      "query": "Who are David Chen's friends?",
+      "expected_facts": ["Fatima Al-Hassan", "Kevin Park"],
+      "expected_answer": "David Chen's friends include Fatima Al-Hassan and Kevin Park, both in San Francisco's tech community."
+    },
+    {
+      "id": "Q07",
+      "category": "relationship",
+      "difficulty": "medium",
+      "query": "Who are the colleagues of Robert Kim in Seattle?",
+      "expected_facts": ["Ethan Brooks", "Hiroshi Tanaka"],
+      "expected_answer": "Robert Kim's colleagues in Seattle include Ethan Brooks (Software Developer) and Hiroshi Tanaka (Robotics Engineer)."
+    },
+    {
+      "id": "Q08",
+      "category": "relationship",
+      "difficulty": "medium",
+      "query": "Who are the neighbors of James Williams in Chicago?",
+      "expected_facts": ["Thomas Brown", "Ava Robinson", "Elena Volkov"],
+      "expected_answer": "James Williams' neighbors in Chicago include Thomas Brown, Ava Robinson, and Elena Volkov, all in the Woodlawn area."
+    },
+    {
+      "id": "Q09",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "query": "How many people work in the Healthcare industry?",
+      "expected_facts": ["Priya Sharma", "Maria Williams", "Amit Patel", "Neha Patel", "Rachel Green", "Grace Lee", "Mia Torres", "Patrick O'Brien", "Liam O'Brien", "Aisha Mohammed", "Ravi Krishnan", "Natasha Petrov", "Kwame Asante"],
+      "expected_answer": "There are approximately 13 people working in the Healthcare industry, including doctors, nurses, pharmacists, and other medical professionals."
+    },
+    {
+      "id": "Q10",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "query": "List all people who live in San Francisco.",
+      "expected_facts": ["David Chen", "Lisa Chen", "Sophie Chen", "Fatima Al-Hassan", "Kevin Park", "Priyanka Mehta", "Mei Lin Chang", "Chen Wei"],
+      "expected_answer": "People living in San Francisco include David Chen, Lisa Chen, Sophie Chen, Fatima Al-Hassan, Kevin Park, Priyanka Mehta, Mei Lin Chang, and Chen Wei."
+    },
+    {
+      "id": "Q11",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "query": "Who are all the students in the network?",
+      "expected_facts": ["Ananya Sharma", "Arjun Sharma", "Sophie Chen", "Rohan Patel", "Daniel Kim", "Lucas Rodriguez", "Hannah Scott", "Sofia Garcia", "Diego Garcia", "Kenji Tanaka", "Chioma Okafor"],
+      "expected_answer": "The students include Ananya Sharma, Arjun Sharma, Sophie Chen, Rohan Patel, Daniel Kim, Lucas Rodriguez, Hannah Scott, Sofia Garcia, Diego Garcia, Kenji Tanaka, and Chioma Okafor."
+    },
+    {
+      "id": "Q12",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Who are the friends of Rajesh Sharma's children?",
+      "expected_facts": ["Emily Johnson", "Rohan Patel", "Hannah Scott", "Maya Singh"],
+      "expected_answer": "Rajesh's children are Ananya and Arjun. Ananya's friends include Emily Johnson, Rohan Patel, Hannah Scott, and Maya Singh."
+    },
+    {
+      "id": "Q13",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "What is the occupation of David Chen's wife?",
+      "expected_facts": ["Lisa Chen", "User Experience Research and Interface Design"],
+      "expected_answer": "David Chen's wife is Lisa Chen, who works as a Lead UX Designer specializing in User Experience Research and Interface Design."
+    },
+    {
+      "id": "Q14",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Which industries do the parents of Rohan Patel work in?",
+      "expected_facts": ["Amit Patel", "Healthcare", "Neha Patel", "Healthcare"],
+      "expected_answer": "Rohan Patel's parents are Amit Patel (Neurosurgeon, Healthcare) and Neha Patel (Clinical Pharmacist, Healthcare). Both work in Healthcare."
+    },
+    {
+      "id": "Q15",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Do any of Michael Johnson's friends work in finance?",
+      "expected_facts": ["Daniel Cooper", "Chief Financial Officer", "Finance"],
+      "expected_answer": "Yes, Michael Johnson's friend Daniel Cooper is a Chief Financial Officer working in Finance at JP Morgan."
+    },
+    {
+      "id": "Q16",
+      "category": "comparison",
+      "difficulty": "medium",
+      "query": "Who is older, Rajesh Sharma or David Chen, and by how many years?",
+      "expected_facts": ["Rajesh Sharma", "45", "David Chen", "38", "7"],
+      "expected_answer": "Rajesh Sharma is older at 45, compared to David Chen at 38 — a difference of 7 years."
+    },
+    {
+      "id": "Q17",
+      "category": "comparison",
+      "difficulty": "medium",
+      "query": "Compare the job titles of the Sharma couple (Rajesh and Priya).",
+      "expected_facts": ["Senior Software Architect", "Cardiologist"],
+      "expected_answer": "Rajesh Sharma is a Senior Software Architect in the Technology industry, while Priya Sharma is a Cardiologist in Healthcare."
+    },
+    {
+      "id": "Q18",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Which friends of Priya Sharma also work in healthcare?",
+      "expected_facts": ["Amit Patel", "Mia Torres"],
+      "expected_answer": "Priya Sharma's friends who also work in healthcare include Amit Patel (Neurosurgeon in Boston) and Mia Torres (Pediatrician in Houston)."
+    },
+    {
+      "id": "Q19",
+      "category": "inference",
+      "difficulty": "hard",
+      "query": "What is the family structure of the Williams family in Chicago?",
+      "expected_facts": ["James Williams", "Maria Williams", "Tyler Williams", "Emma Williams", "married", "two children", "siblings"],
+      "expected_answer": "The Williams family: James Williams (Professor, 55) married to Maria Williams (Head Nurse, 52). They have two children — Tyler Williams (Civil Engineer, 28) and Emma Williams (Senior Graphic Designer, 25), who are siblings."
+    },
+    {
+      "id": "Q20",
+      "category": "inference",
+      "difficulty": "hard",
+      "query": "Describe the professional network of tech workers in Austin, Texas.",
+      "expected_facts": ["Carlos Rodriguez", "Takeshi Yamamoto", "Abdul Rahman", "Jack Turner"],
+      "expected_answer": "Austin's tech network includes Carlos Rodriguez (Senior DevOps Engineer at Dell), Takeshi Yamamoto (Lead Game Designer at Riot Games), Abdul Rahman (Professor of Civil Engineering at UT Austin), and Jack Turner (Master Electrician). They are connected through colleague and neighbor relationships."
+    },
+    {
+      "id": "Q21",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Who are the siblings in the Garcia family and what do their parents do?",
+      "expected_facts": ["Sofia Garcia", "Diego Garcia", "siblings", "Miguel Garcia", "Film Director", "Carmen Garcia", "Talent Agent"],
+      "expected_answer": "Sofia and Diego Garcia are siblings. Their father Miguel Garcia is a Film Director, and their mother Carmen Garcia is a Talent Agent, both in the entertainment industry in Los Angeles."
+    },
+    {
+      "id": "Q22",
+      "category": "aggregation",
+      "difficulty": "hard",
+      "query": "How many families are there in the network and what cities are they in?",
+      "expected_facts": ["Sharma", "Bangalore", "Johnson", "New York", "Chen", "San Francisco", "Williams", "Chicago", "Patel", "Boston", "Kim", "Seattle", "Rodriguez", "Austin", "Wright", "Denver", "Garcia", "Los Angeles", "O'Brien", "Boston", "Tanaka", "Seattle", "Okafor", "Atlanta", "Eriksson", "Denver"],
+      "expected_answer": "There are 13 families: Sharma (Bangalore), Johnson (New York), Chen (San Francisco), Williams (Chicago), Patel (Boston), Kim (Seattle), Rodriguez (Austin), Wright (Denver), Garcia (Los Angeles), O'Brien (Boston), Tanaka (Seattle), Okafor (Atlanta), and Eriksson (Denver)."
+    },
+    {
+      "id": "Q23",
+      "category": "relationship",
+      "difficulty": "medium",
+      "query": "Who lives near Fatima Al-Hassan?",
+      "expected_facts": ["Kevin Park", "Priyanka Mehta"],
+      "expected_answer": "Fatima Al-Hassan's neighbors include Kevin Park and Priyanka Mehta, all on Folsom Street in San Francisco."
+    },
+    {
+      "id": "Q24",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "query": "Find all people who are both friends and colleagues.",
+      "expected_facts": ["David Chen", "Fatima Al-Hassan", "Kevin Park", "Hiroshi Tanaka", "Robert Kim", "Ethan Brooks"],
+      "expected_answer": "Several people are both friends and colleagues, including: David Chen with Fatima Al-Hassan and Kevin Park in SF tech; Hiroshi Tanaka with Robert Kim and Ethan Brooks in Seattle tech."
+    },
+    {
+      "id": "Q25",
+      "category": "inference",
+      "difficulty": "hard",
+      "query": "Which retired people are in the network and what did they do before retirement?",
+      "expected_facts": ["Thomas Brown", "High School Teacher", "Rosa Hernandez", "Federal Judge", "Paul Thompson", "Army Colonel", "Victor Oduya", "Diplomat"],
+      "expected_answer": "There are 4 retirees: Thomas Brown (former AP Chemistry Teacher, Chicago), Rosa Hernandez (former Federal Judge, Miami), Paul Thompson (former Army Colonel, Dallas), and Victor Oduya (former U.S. Ambassador to Kenya, Washington DC)."
+    }
+  ]
+}
